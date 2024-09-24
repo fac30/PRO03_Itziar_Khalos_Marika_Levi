@@ -1,6 +1,7 @@
 // src/index.js
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
+import apiRoutes from "./routes/apiRoutes";
 
 // imports the json file(s) - do this with Marika's data bases
 import quizzesJson from "../db/quizzes.json";
@@ -10,6 +11,9 @@ import { Quiz } from "./models/quiz.ts";
 dotenv.config();
 
 const app: Express = express();
+// Use the API routes
+app.use("/api", apiRoutes);
+
 const port = process.env.PORT || 3000;
 
 app.get("/", (req: Request, res: Response) => {
