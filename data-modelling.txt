@@ -35,7 +35,7 @@
     - **Score**: The user's score.
 
 ### Relationships Between Objects:
-- **Quiz to Question**: One-to-many (a quiz has many questions).
-- **Question to Answer**: One-to-many (a question has multiple possible answers).
-- **User to Quiz Result**: One-to-many (a user can have many quiz results).
-- **Quiz to Quiz Result**: One-to-many (a quiz can have many results).
+- **Quiz to Question*
+- **Question to Answer**
+- **User to Quiz Result*
+- **Quiz to Quiz Result**
