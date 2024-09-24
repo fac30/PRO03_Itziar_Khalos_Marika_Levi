@@ -1,0 +1,41 @@
+# Data modelling for Quiz generator API
+
+### Objects (Entities) and Their Attributes:
+
+1. **Quiz**:
+    - **Quiz ID**: Unique identifier for the quiz.
+    - **Name**: The name of the quiz.
+    - **Description**: A brief overview of the quiz.
+    - **Category**: The type or topic of the quiz (e.g., science, history).
+    - **Difficulty**: The difficulty level (e.g., easy, medium, hard).
+    - **Number of Questions**: How many questions are in the quiz.
+    
+2. **Question**:
+    - **Question ID**: Unique identifier for each question.
+    - **Quiz ID**: A reference to the quiz this question belongs to.
+    - **Name**: The actual question being asked.
+    - **Type**: The type of question (e.g., multiple choice, true/false, short answer).
+    - **Points**: The number of points this question is worth.
+    - 
+3. **Answer**:
+    - **Answer ID**: Unique identifier for each answer.
+    - **Question ID**: A reference to the related question.
+    - **Name**: The answer content (for multiple choice, this is one of the options).
+    - **Is Correct**: Boolean indicating if this is the correct answer.
+    - 
+4. **User**:
+    - **User ID**: Unique identifier for each user.
+    - **Name**: The name of the user.
+    - **Points**: How many points the user has, for the leader board.
+    - 
+5. **Quiz Result**:
+    - **Result ID**: Unique identifier for each result entry.
+    - **Quiz ID**: Reference to the quiz taken.
+    - **User ID**: Reference to the user who took the quiz.
+    - **Score**: The user's score.
+
+### Relationships Between Objects:
+- **Quiz to Question**: One-to-many (a quiz has many questions).
+- **Question to Answer**: One-to-many (a question has multiple possible answers).
+- **User to Quiz Result**: One-to-many (a user can have many quiz results).
+- **Quiz to Quiz Result**: One-to-many (a quiz can have many results).
