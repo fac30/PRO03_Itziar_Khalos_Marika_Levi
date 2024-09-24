@@ -1,0 +1,100 @@
+{
+  "quizzes": [
+    {
+      "quiz_id": 1,
+      "name": "FAC30 Cohort Mates Quiz",
+      "description": "A quiz about our cohort mates in FAC30.",
+      "category": "FAC30",
+      "difficulty": "Easy",
+      "number_of_questions": 8
+    },
+    {
+      "quiz_id": 2,
+      "name": "FAC30 Cohort Mates Quiz",
+      "description": "A quiz about our cohort mates in FAC30.",
+      "category": "FAC30",
+      "difficulty": "Medium",
+      "number_of_questions": 8
+    },
+    {
+      "quiz_id": 3,
+      "name": "FAC30 Cohort Mates Quiz",
+      "description": "A quiz about our cohort mates in FAC30.",
+      "category": "FAC30",
+      "difficulty": "Hard",
+      "number_of_questions": 8
+    },
+    {
+      "quiz_id": 4,
+      "name": "Art Quiz",
+      "description": "Challenge your knowledge in the history of western paintings.",
+      "category": "Art",
+      "difficulty": "Easy",
+      "number_of_questions": 8
+    },
+    {
+      "quiz_id": 5,
+      "name": "Art Quiz",
+      "description": "Challenge your knowledge in the history of western paintings.",
+      "category": "Art",
+      "difficulty": "Medium",
+      "number_of_questions": 8
+    },
+    {
+      "quiz_id": 6,
+      "name": "Art Quiz",
+      "description": "Challenge your knowledge in the history of western paintings.",
+      "category": "Art",
+      "difficulty": "Hard",
+      "number_of_questions": 8
+    },
+    {
+      "quiz_id": 7,
+      "name": "Music Gig",
+      "description": "Are you passionate about music? This quiz is for you!",
+      "category": "Music",
+      "difficulty": "Easy",
+      "number_of_questions": 8
+    },
+    {
+      "quiz_id": 8,
+      "name": "Music Gig",
+      "description": "Are you passionate about music? This quiz is for you!",
+      "category": "Music",
+      "difficulty": "Medium",
+      "number_of_questions": 8
+    },
+    {
+      "quiz_id": 9,
+      "name": "Music Gig",
+      "description": "Are you passionate about music? This quiz is for you!",
+      "category": "Music",
+      "difficulty": "Hard",
+      "number_of_questions": 8
+    },
+    {
+      "quiz_id": 10,
+      "name": "Wonderful Movie",
+      "description": "Dream about movies with this quiz.",
+      "category": "Movie",
+      "difficulty": "Easy",
+      "number_of_questions": 8
+    },
+    {
+      "quiz_id": 11,
+      "name": "Wonderful Movie",
+      "description": "Dream about movies with this quiz.",
+      "category": "Movie",
+      "difficulty": "Medium",
+      "number_of_questions": 8
+    },
+    {
+      "quiz_id": 12,
+      "name": "Wonderful Movie",
+      "description": "Dream about movies with this quiz.",
+      "category": "Movie",
+      "difficulty": "Hard",
+      "number_of_questions": 8
+    }
+  ]
+}
