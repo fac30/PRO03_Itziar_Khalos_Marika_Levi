@@ -22,8 +22,15 @@ export const getSpotifyTrackByScore = async (score: number): Promise<string> => 
     // Fetch the track data from Spotify API
     const track = await spotifyApi.getTrack(trackId);
 
-    // Return the preview URL of the track
-    return track.body.preview_url;  // Return the track's preview URL
+    // Check if the preview URL exists, otherwise return a default or handle it
+    const previewUrl = track.body.preview_url;
+    if (previewUrl) {
+      return previewUrl;  // Return the track's preview URL if available
+    } else {
+      throw new Error('Preview URL not available for this track');
+      // Alternatively, you can return a placeholder URL or empty string:
+      // return 'https://example.com/placeholder.mp3';
+    }
   } catch (error) {
     console.error('Error fetching track from Spotify:', error);
     throw error;
