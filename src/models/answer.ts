@@ -22,24 +22,6 @@ class Answer {
     console.log(`[server]: Answer submitted: ${answer}`);
   }
 
-  // static async postNewAnswer(quizId: number, answer: string): Promise<Response> {
-  //   const url = `http`; // replace with actual endpoint. Endpoint where the POST request is sent
-  //   // API used to make HTTP requests
-  //   const response = await fetch(url, {   
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     // The answer is converted to a JSON string and sent as the body of the request.
-  //     body: JSON.stringify({ answer: answer }),
-  //   });
-
-  //   if (!response.ok) {
-  //     throw new Error(`Failed to post answer: ${response.statusText}`);
-  //   }
-
-  //   return response;
-  // }
 }
 
 
