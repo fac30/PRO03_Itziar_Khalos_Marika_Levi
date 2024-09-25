@@ -12,7 +12,7 @@ class Question {
     type: string,
     points: number
   ) {
-    this.is = id;
+    this.id = id;
     this.quizId = quizId;
     this.text = text;
     this.type = type;
