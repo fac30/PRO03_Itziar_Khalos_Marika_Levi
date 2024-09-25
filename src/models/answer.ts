@@ -17,6 +17,17 @@ class Answer {
     this.text = text;
     this.isCorrect = isCorrect;
   }
+
+  // You can call the function using the class --> Answer.createAnswersFomJSON()
+  static createAnswersFromJSON(jsonData: any[]): Answer[] {
+    const answersList: Answer[] = [];
+    for (const answer of jsonData) {
+      answersList.push(
+        new Answer(answer.id, answer.questionId, answer.text, answer.isCorrect)
+      );
+    }
+    return answersList;
+  }
 }
 
 export { Answer };
