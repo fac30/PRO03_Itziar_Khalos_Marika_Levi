@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import apiRoutes from "./routes/apiRoutes";
 
 // imports the json file(s) - do this with Marika's data bases
-import quizzesJson from "../db/quizzes.json";
+import quizzesJson from "../data/quizzes.json";
 
 import { Answer } from "./models/answer.ts";
 import { Question } from "./models/question.ts";
