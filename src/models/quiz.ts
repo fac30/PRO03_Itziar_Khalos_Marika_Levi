@@ -1,4 +1,7 @@
 class Quiz {
+  save(quizzesFilePath: string, arg1: (err: NodeJS.ErrnoException | null) => import("express").Response<any, Record<string, any>> | undefined) {
+    throw new Error("Method not implemented.");
+  }
   id: number;
   name: string;
   description: string;
@@ -39,6 +42,23 @@ class Quiz {
       );
     }
     return quizzesList;
+  }
+
+   // Simulate the POST request using console.log
+   static postQuiz(
+    quizName: string, 
+    quizDescription: string, 
+    quizCategory: string, 
+    quizDifficulty: string, 
+    numberOfQuestions: number
+  ): void {
+    // Simulate logging the POST request
+    console.log(`[server]: Received POST request to /quizzes/${quizName}/quizs`);
+    console.log(`[server]: Question submitted:`);
+    console.log(`    description: ${quizDescription}`);
+    console.log(`    category: ${quizCategory}`);
+    console.log(`    difficulty: ${quizDifficulty}`);
+    console.log(`    numberOfQuestions: ${numberOfQuestions}`);
   }
 }
 
