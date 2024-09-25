@@ -1,5 +1,3 @@
-
-
 // Create classes with their constructors, so we can access the information inside the JSON files
 class Answer {
   id: number;
