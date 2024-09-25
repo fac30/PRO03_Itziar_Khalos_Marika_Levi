@@ -18,6 +18,7 @@ class Question {
     this.type = type;
     this.points = points;
   }
+  
 }
 
 export { Question };

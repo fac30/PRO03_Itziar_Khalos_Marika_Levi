@@ -24,6 +24,9 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
 
+// Middleware to parse JSON bodies. It makes the parsed data available on req.body.
+app.use(express.json());
+
 // quizzesJson is the example to test it's working, remember to replace with Marika's data bases
 app.get("/quizzes", (req: Request, res: Response) => {
   const allQuizzes = Quiz.createQuizzesFromJSON(quizzesJson);
@@ -37,6 +40,7 @@ app.get("/quizzes", (req: Request, res: Response) => {
 app.post("/quizzes", (req: Request, res: Response) => {
   res.json("create a new quiz");
 });
+
 
 app.patch("/quizzes", (req: Request, res: Response) => {
   res.json("update one quiz");
