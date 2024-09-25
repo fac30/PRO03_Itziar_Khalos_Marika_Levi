@@ -1,14 +1,17 @@
 // src/index.js
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-import apiRoutes from "./routes/apiRoutes.ts";
+import apiRoutes from "./routes/apiRoutes";
 // fs is used to read from and write to JSON files, like quiz.json or questions.json.
 import fs from 'fs';
 // The path module resolves paths to the JSON files you're interacting with (e.g., quiz.json, questions.json).
 import path from 'path';
-
 // imports the json file(s) - do this with Marika's data bases
 import quizzesJson from "../data/quizzes.json";
+import answersJson from "../data/answers.json";
+import questionsJson from "../data/questions.json";
+import resultsJson from "../data/results.json";
+import usersJson from "../data/users.json";
 
 import { Answer } from "./models/answer.ts";
 import { Question } from "./models/question.ts";
@@ -27,13 +30,20 @@ app.use("/api", apiRoutes);
 const port = process.env.PORT || 3000;
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
+  res.send("Wisdom War Server");
 });
 
-// quizzesJson is the example to test it's working, remember to replace with Marika's data bases
 app.get("/quizzes", (req: Request, res: Response) => {
   const allQuizzes = Quiz.createQuizzesFromJSON(quizzesJson);
   res.json(allQuizzes);
+});
+
+// The below are the endopoints, we have to update them with the functions we will create inside the classes
+
+// post --> read the body from the request > use the date from the request to create a new Quiz object > save that quiz object into the JSON file
+// create a method inside the Quizz class, named SAVE, that saves objects in the json file
+app.post("/quizzes", (req: Request, res: Response) => {
+  res.json("create a new quiz");
 });
 
 // PATCH code for Quiz: 2 helper functions and endpoints:
@@ -76,6 +86,18 @@ app.patch('/quizzes/:id', (req: Request, res: Response) => {
   res.json({ message: 'Quiz updated successfully', quiz: updatedQuiz });
 });
 
+app.delete("/quizzes", (req: Request, res: Response) => {
+  res.json("delete one quiz");
+});
+
+app.get("/questions", (req: Request, res: Response) => {
+  const allQuestions = Question.createQuestionsFromJSON(questionsJson);
+  res.json(allQuestions);
+});
+app.post("/questions", (req: Request, res: Response) => {
+  res.json("create a new question");
+});
+
 // PATCH code for Questions: 2 helper functions and endpoints:
 const questionsFilePath = path.join(__dirname, '../data/questions.json');
 // Helper function 1: to read questions from the JSON file
@@ -109,6 +131,19 @@ app.patch('/questions/:id', (req: Request, res: Response) => {
   res.json({ message: 'Question updated successfully', question: updatedQuestion });
 });
 
+app.delete("/questions", (req: Request, res: Response) => {
+  res.json("delete one question");
+});
+
+app.get("/answers", (req: Request, res: Response) => {
+  const allAnswers = Answer.createAnswersFromJSON(answersJson);
+  res.json(allAnswers);
+});
+app.post("/answers", (req: Request, res: Response) => {
+  res.json("create a new answer");
+});
+
+
 // PATCH code for Answer: 2 helper functions and endpoints:
 const answersFilePath = path.join(__dirname, '../data/answers.json');
 // Helper function 1: to read answers from the JSON file
@@ -140,6 +175,19 @@ app.patch('/answers/:id', (req: Request, res: Response) => {
   writeAnswers(answers);
 
   res.json({ message: 'Answers updated successfully', answers: updatedAnswer });
+});
+
+
+app.delete("/answers", (req: Request, res: Response) => {
+  res.json("delete one answer");
+});
+
+app.get("/users", (req: Request, res: Response) => {
+  const allUsers = User.createUsersFromJSON(usersJson);
+  res.json(allUsers);
+});
+app.post("/users", (req: Request, res: Response) => {
+  res.json("create a new user");
 });
 
 // PATCH code for User: 2 helper functions and endpoints:
@@ -175,6 +223,18 @@ app.patch('/users/:id', (req: Request, res: Response) => {
   res.json({ message: 'Users updated successfully', users: updatedUser });
 });
 
+app.delete("/users", (req: Request, res: Response) => {
+  res.json("delete one user");
+});
+
+app.get("/results", (req: Request, res: Response) => {
+  const allResults = Result.createResultsFromJSON(resultsJson);
+  res.json(allResults);
+});
+app.post("/results", (req: Request, res: Response) => {
+  res.json("create a new result");
+});
+
 // PATCH code for Results: 2 helper functions and endpoints:
 const resultsFilePath = path.join(__dirname, '../data/results.json');
 // Helper function 1: to read results from the JSON file
@@ -208,70 +268,6 @@ app.patch('/results/:id', (req: Request, res: Response) => {
   res.json({ message: 'Results updated successfully', results: updatedResult });
 });
 
-// The below are the endopoints, we have to update them with the functions we will create inside the classes
-
-// post --> read the body from the request > use the date from the request to create a new Quiz object > save that quiz object into the JSON file
-// create a method inside the Quizz class, named SAVE, that saves objects in the json file
-app.post("/quizzes", (req: Request, res: Response) => {
-  res.json("create a new quiz");
-});
-
-app.patch("/quizzes", (req: Request, res: Response) => {
-  res.json("update one quiz");
-});
-
-app.delete("/quizzes", (req: Request, res: Response) => {
-  res.json("delete one quiz");
-});
-
-app.get("/questions", (req: Request, res: Response) => {
-  res.json("retrieve all questions");
-});
-app.post("/questions", (req: Request, res: Response) => {
-  res.json("create a new question");
-});
-app.patch("/questions", (req: Request, res: Response) => {
-  res.json("update one question");
-});
-app.delete("/questions", (req: Request, res: Response) => {
-  res.json("delete one question");
-});
-
-app.get("/answers", (req: Request, res: Response) => {
-  res.json("retrieve all answers");
-});
-app.post("/answers", (req: Request, res: Response) => {
-  res.json("create a new answer");
-});
-app.patch("/answers", (req: Request, res: Response) => {
-  res.json("update one answer");
-});
-app.delete("/answers", (req: Request, res: Response) => {
-  res.json("delete one answer");
-});
-
-app.get("/users", (req: Request, res: Response) => {
-  res.json("retrieve all users");
-});
-app.post("/users", (req: Request, res: Response) => {
-  res.json("create a new user");
-});
-app.patch("/users", (req: Request, res: Response) => {
-  res.json("update one users");
-});
-app.delete("/users", (req: Request, res: Response) => {
-  res.json("delete one user");
-});
-
-app.get("/results", (req: Request, res: Response) => {
-  res.json("retrieve all results");
-});
-app.post("/results", (req: Request, res: Response) => {
-  res.json("create a new result");
-});
-app.patch("/results", (req: Request, res: Response) => {
-  res.json("update one result");
-});
 app.delete("/results", (req: Request, res: Response) => {
   res.json("delete one result");
 });
@@ -279,3 +275,13 @@ app.delete("/results", (req: Request, res: Response) => {
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
+
+
+
+
+
+
+
+
+
+
