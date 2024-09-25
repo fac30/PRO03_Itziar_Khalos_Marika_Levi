@@ -91,18 +91,19 @@ function writeQuestions(questions: Question[]): void {
 app.patch('/questions/:id', (req: Request, res: Response) => {
   const questionId = parseInt(req.params.id);
   const updates = req.body;
-
+  // Read existing questions
   let questions = readQuestions();
-
+  // Find the questions by ID
   const questionIndex = questions.findIndex((question) => question.id === questionId);
 
   if (questionIndex === -1) {
     return res.status(404).json({ message: 'Question not found' });
   }
-
+  // Update only the provided fields in the questions
   const updatedQuestion = { ...questions[questionIndex], ...updates };
+  // Replace the old questions with the updated one
   questions[questionIndex] = updatedQuestion;
-
+  // Save the updated questions array back to the JSON file
   writeQuestions(questions);
 
   res.json({ message: 'Question updated successfully', question: updatedQuestion });
