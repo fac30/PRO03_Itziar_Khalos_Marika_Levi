@@ -1,14 +1,12 @@
-{
-    "users": [
+[
     {
-      "user_id": 1,
+      "userId": 1,
       "name": "User1",
       "points": 0
     },
     {
-      "user_id": 2,
+      "userId": 2,
       "name": "User2",
       "points": 0
     }
   ]
-}
