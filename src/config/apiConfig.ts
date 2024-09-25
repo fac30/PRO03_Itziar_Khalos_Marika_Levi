@@ -26,3 +26,26 @@ export const getSpotifyAccessToken = async (): Promise<void> => {
 };
 
 export default spotifyApi;
+
+// src/config/apiConfig.ts
+import axios from 'axios';
+
+const giphyApiKey = process.env.GIPHY_API_KEY || 'YOUR_GIPHY_API_KEY'; // Use your actual API key here or load from env.
+
+// Function to fetch a random Giphy based on a tag
+export const fetchGiphyMeme = async (tag: string): Promise<string> => {
+  try {
+    const response = await axios.get('https://api.giphy.com/v1/gifs/random', {
+      params: {
+        api_key: giphyApiKey,
+        tag: tag, // Use a tag to search for specific types of gifs
+        rating: 'pg-13', // Ensure it's appropriate content
+      },
+    });
+    const gifUrl = response.data.data.images.original.url;
+    return gifUrl;
+  } catch (error) {
+    console.error('Error fetching Giphy meme:', error);
+    throw error;
+  }
+};
