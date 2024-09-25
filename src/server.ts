@@ -2,6 +2,10 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import apiRoutes from "./routes/apiRoutes";
+// fs is used to read from and write to JSON files, like quiz.json or questions.json.
+import fs from 'fs';
+// The path module resolves paths to the JSON files you're interacting with (e.g., quiz.json, questions.json).
+import path from 'path';
 
 // imports the json file(s) - do this with Marika's data bases
 import quizzesJson from "../data/quizzes.json";
@@ -15,6 +19,8 @@ import { User } from "./models/user.ts";
 dotenv.config();
 
 const app: Express = express();
+// Configuring the Express application to automatically parse incoming JSON payloads from the request body.
+app.use(express.json());
 // Use the API routes
 app.use("/api", apiRoutes);
 
