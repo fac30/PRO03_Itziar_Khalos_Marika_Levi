@@ -9,3 +9,5 @@ class User {
     this.points = points;
   }
 }
+
+export { User };

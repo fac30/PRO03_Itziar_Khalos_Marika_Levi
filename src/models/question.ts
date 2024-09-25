@@ -19,3 +19,5 @@ class Question {
     this.points = points;
   }
 }
+
+export { Question };

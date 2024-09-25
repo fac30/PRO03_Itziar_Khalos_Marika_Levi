@@ -18,3 +18,5 @@ class Answer {
     this.isCorrect = isCorrect;
   }
 }
+
+export { Answer };

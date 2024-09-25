@@ -6,7 +6,11 @@ import apiRoutes from "./routes/apiRoutes";
 // imports the json file(s) - do this with Marika's data bases
 import quizzesJson from "../db/quizzes.json";
 
+import { Answer } from "./models/answer.ts";
+import { Question } from "./models/question.ts";
 import { Quiz } from "./models/quiz.ts";
+import { Result } from "./models/result.ts";
+import { User } from "./models/user.ts";
 
 dotenv.config();
 
@@ -25,6 +29,8 @@ app.get("/quizzes", (req: Request, res: Response) => {
   const allQuizzes = Quiz.createQuizzesFromJSON(quizzesJson);
   res.json(allQuizzes);
 });
+
+// The below are the endopoints, we have to update them with the functions we will create inside the classes
 
 // post --> read the body from the request > use the date from the request to create a new Quiz object > save that quiz object into the JSON file
 // create a method inside the Quizz class, named SAVE, that saves objects in the json file

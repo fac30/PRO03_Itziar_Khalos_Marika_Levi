@@ -12,3 +12,5 @@ class Result {
     this.score = score;
   }
 }
+
+export { Result };
