@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "quizId": 1,
+    "text": "Who likes the series Bridgerton?",
+    "type": "multiple choice",
+    "points": 1
+  },
+  {
+    "id": 2,
+    "quizId": 1,
+    "text": "Who prefers the series B99 (Brooklyn Nine-Nine)?",
+    "type": "multiple choice",
+    "points": 1
+  },
+  {
+    "id": 3,
+    "quizId": 1,
+    "text": "Who is a fan of The Office?",
+    "type": "multiple choice",
+    "points": 1
+  },
+  {
+    "id": 4,
+    "quizId": 1,
+    "text": "Who likes the series Lucifer?",
+    "type": "multiple choice",
+    "points": 1
+  },
+  {
+    "id": 5,
+    "quizId": 1,
+    "text": "Who watches Bad Education?",
+    "type": "multiple choice",
+    "points": 1
+  },
+  {
+    "id": 6,
+    "quizId": 1,
+    "text": "Who is a fan of Elite / Casa de Papel?",
+    "type": "multiple choice",
+    "points": 1
+  },
+  {
+    "id": 7,
+    "quizId": 1,
+    "text": "Whose life-changing experience was traveling alone?",
+    "type": "multiple choice",
+    "points": 1
+  },
+  {
+    "id": 8,
+    "quizId": 1,
+    "text": "Who experienced a life-changing career change?",
+    "type": "multiple choice",
+    "points": 1
+  }
+]
