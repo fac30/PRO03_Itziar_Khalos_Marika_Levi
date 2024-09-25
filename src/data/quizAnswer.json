@@ -1,0 +1,194 @@
+[
+    {
+      "answerId": 1,
+      "questionId": 1,
+      "name": "Marika", 
+      "isCorrect": true
+    },
+    {
+      "answerId": 1,
+      "questionId": 1,
+      "name": "Itz", 
+      "isCorrect": false
+    },
+    {
+      "answerId": 1,
+      "questionId": 1,
+      "name": "Josh", 
+      "isCorrect": false
+    },
+    {
+      "answerId": 1,
+      "questionId": 1,
+      "name": "Khalos", 
+      "isCorrect": false
+    },
+    {
+      "answerId": 2,
+      "questionId": 2,
+      "name": "Max",
+      "isCorrect": false
+    },
+    {
+      "answerId": 2,
+      "questionId": 2,
+      "name": "Itz",
+      "isCorrect": true
+    },
+    {
+      "answerId": 2,
+      "questionId": 2,
+      "name": "Alex",
+      "isCorrect": false
+    },
+    {
+      "answerId": 2,
+      "questionId": 2,
+      "name": "Ben",
+      "isCorrect": false
+    },
+    {
+      "answerId": 3,
+      "questionId": 3,
+      "name": "Ben",
+      "isCorrect": false
+    },
+    {
+      "answerId": 3,
+      "questionId": 3,
+      "name": "Josh",
+      "isCorrect": true
+    },
+    {
+      "answerId": 3,
+      "questionId": 3,
+      "name": "Itz",
+      "isCorrect": false
+    },
+    {
+      "answerId": 3,
+      "questionId": 3,
+      "name": "Max",
+      "isCorrect": false
+    },
+    {
+      "answerId": 4,
+      "questionId": 4,
+      "name": "Marika",
+      "isCorrect": false
+    },
+    {
+      "answerId": 4,
+      "questionId": 4,
+      "name": "Dani",
+      "isCorrect": false
+    },
+    {
+      "answerId": 4,
+      "questionId": 4,
+      "name": "Khalos",
+      "isCorrect": false
+    },
+    {
+      "answerId": 4,
+      "questionId": 4,
+      "name": "Max",
+      "isCorrect": false
+    },
+    {
+      "answerId": 5,
+      "questionId": 5,
+      "name": "Ben",
+      "isCorrect": false
+    },
+    {
+      "answerId": 5,
+      "questionId": 5,
+      "name": "Alex",
+      "isCorrect": true
+    },
+    {
+      "answerId": 5,
+      "questionId": 5,
+      "name": "Tanya",
+      "isCorrect": false
+    },
+    {
+      "answerId": 5,
+      "questionId": 5,
+      "name": "Levi",
+      "isCorrect": false
+    },
+    {
+      "answerId": 6,
+      "questionId": 6,
+      "name": "Khalos",
+      "isCorrect": true
+    },
+    {
+      "answerId": 6,
+      "questionId": 6,
+      "name": "Itz",
+      "isCorrect": false
+    },
+    {
+      "answerId": 6,
+      "questionId": 6,
+      "name": "William",
+      "isCorrect": false
+    },
+    {
+      "answerId": 6,
+      "questionId": 6,
+      "name": "Jack",
+      "isCorrect": false
+    },
+    {
+      "answerId": 7,
+      "questionId": 7,
+      "name": "Alex",
+      "isCorrect": true
+    },
+    {
+      "answerId": 7,
+      "questionId": 7,
+      "name": " Tanya",
+      "isCorrect": false
+    },
+    {
+      "answerId": 7,
+      "questionId": 7,
+      "name": "Levi",
+      "isCorrect": false
+    },
+    {
+      "answerId": 7,
+      "questionId": 7,
+      "name": "Josh",
+      "isCorrect": false
+    },
+    {
+      "answerId": 8,
+      "questionId": 8,
+      "name": "Levi",
+      "isCorrect": true
+    },
+    {
+      "answerId": 8,
+      "questionId": 8,
+      "name": "Tanya",
+      "isCorrect": false
+    },
+    {
+      "answerId": 8,
+      "questionId": 8,
+      "name": "Riley",
+      "isCorrect": false
+    },
+    {
+      "answerId": 8,
+      "questionId": 8,
+      "name": "Gaji",
+      "isCorrect": false
+    }
+  ]
