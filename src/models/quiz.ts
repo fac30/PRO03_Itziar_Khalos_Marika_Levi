@@ -23,7 +23,7 @@ class Quiz {
   }
 
   // with static the function is part of the blueprint, and not of the instance.
-  // You can call the function using the class --> class.createQuizzesFromJSON()
+  // You can call the function using the class --> Quiz.createQuizzesFromJSON()
   static createQuizzesFromJSON(jsonData: any[]): Quiz[] {
     const quizzesList: Quiz[] = [];
     for (const quiz of jsonData) {

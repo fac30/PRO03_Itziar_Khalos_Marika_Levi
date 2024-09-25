@@ -5,6 +5,10 @@ import apiRoutes from "./routes/apiRoutes";
 
 // imports the json file(s) - do this with Marika's data bases
 import quizzesJson from "../data/quizzes.json";
+import answersJson from "../data/answers.json";
+import questionsJson from "../data/questions.json";
+import resultsJson from "../data/results.json";
+import usersJson from "../data/users.json";
 
 import { Answer } from "./models/answer.ts";
 import { Question } from "./models/question.ts";
@@ -21,10 +25,9 @@ app.use("/api", apiRoutes);
 const port = process.env.PORT || 3000;
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
+  res.send("Wisdom War Server");
 });
 
-// quizzesJson is the example to test it's working, remember to replace with Marika's data bases
 app.get("/quizzes", (req: Request, res: Response) => {
   const allQuizzes = Quiz.createQuizzesFromJSON(quizzesJson);
   res.json(allQuizzes);
@@ -47,7 +50,8 @@ app.delete("/quizzes", (req: Request, res: Response) => {
 });
 
 app.get("/questions", (req: Request, res: Response) => {
-  res.json("retrieve all questions");
+  const allQuestions = Question.createQuestionsFromJSON(questionsJson);
+  res.json(allQuestions);
 });
 app.post("/questions", (req: Request, res: Response) => {
   res.json("create a new question");
@@ -60,7 +64,8 @@ app.delete("/questions", (req: Request, res: Response) => {
 });
 
 app.get("/answers", (req: Request, res: Response) => {
-  res.json("retrieve all answers");
+  const allAnswers = Answer.createAnswersFromJSON(answersJson);
+  res.json(allAnswers);
 });
 app.post("/answers", (req: Request, res: Response) => {
   res.json("create a new answer");
@@ -73,7 +78,8 @@ app.delete("/answers", (req: Request, res: Response) => {
 });
 
 app.get("/users", (req: Request, res: Response) => {
-  res.json("retrieve all users");
+  const allUsers = User.createUsersFromJSON(usersJson);
+  res.json(allUsers);
 });
 app.post("/users", (req: Request, res: Response) => {
   res.json("create a new user");
@@ -86,7 +92,8 @@ app.delete("/users", (req: Request, res: Response) => {
 });
 
 app.get("/results", (req: Request, res: Response) => {
-  res.json("retrieve all results");
+  const allResults = Result.createResultsFromJSON(resultsJson);
+  res.json(allResults);
 });
 app.post("/results", (req: Request, res: Response) => {
   res.json("create a new result");
