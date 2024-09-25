@@ -109,6 +109,40 @@ app.patch('/questions/:id', (req: Request, res: Response) => {
   res.json({ message: 'Question updated successfully', question: updatedQuestion });
 });
 
+// PATCH code for Answer: 2 helper functions and endpoints:
+const answersFilePath = path.join(__dirname, '../data/answers.json');
+// Helper function 1: to read answers from the JSON file
+function readAnswers(): Answer[] {
+  const data = fs.readFileSync(answersFilePath, 'utf-8');
+  return JSON.parse(data);
+}
+// Helper function 2: to write answers to the JSON file
+function writeAnswers(answers: Answer[]): void {
+  fs.writeFileSync(answersFilePath, JSON.stringify(answers, null, 2));
+}
+// PATCH endpoint to update answers
+app.patch('/answers/:id', (req: Request, res: Response) => {
+  const answerId = parseInt(req.params.id);
+  const updates = req.body;
+  // Read existing answers
+  let answers = readAnswers();
+  // Find the answers by ID
+  const answerIndex = answers.findIndex((answer) => answer.id === answerId);
+
+  if (answerIndex === -1) {
+    return res.status(404).json({ message: 'Answer not found' });
+  }
+  // Update only the provided fields in the answers
+  const updatedAnswer = { ...answers[answerIndex], ...updates };
+  // Replace the old answers with the updated one
+  answers[answerIndex] = updatedAnswer;
+  // Save the updated answers array back to the JSON file
+  writeAnswers(answers);
+
+  res.json({ message: 'Answers updated successfully', answers: updatedAnswer });
+});
+
+
 // The below are the endopoints, we have to update them with the functions we will create inside the classes
 
 // post --> read the body from the request > use the date from the request to create a new Quiz object > save that quiz object into the JSON file
