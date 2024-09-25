@@ -1,19 +1,12 @@
-name: CI/CD Pipeline
+name: Deploy to EC2
 
 on:
   push:
     branches:
-      - develop
-      - staging
-      - main
-  pull_request:
-    branches:
-      - develop
-      - staging
-      - main
+      - deploy
 
 jobs:
-  test:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,5 +21,20 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Run tests
-      run: npm test
+    - name: Build the project
+      run: npm run build
+
+    - name: Deploy to EC2
+      env:
+        PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+        HOST: ${{ secrets.EC2_HOST }}
+        USER: ${{ secrets.EC2_USER }}
+      run: |
+        echo "$PRIVATE_KEY" > Wisdom_wars.pem
+        chmod 600 Wisdom_wars.pem
+        scp -i Wisdom_wars.pem -r ./build ec2-user@$ip-172-31-20-192.eu-west-2.compute.internal:/home/ec2-user/var/www/quizapp
+        ssh -i Wisdom_wars.pem ec2-user@$ip-172-31-20-192.eu-west-2.compute.internal 'cd /home/ec2-user/var/www/quizapp && npm install && npm start'
+
+
+
+  
