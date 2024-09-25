@@ -142,6 +142,71 @@ app.patch('/answers/:id', (req: Request, res: Response) => {
   res.json({ message: 'Answers updated successfully', answers: updatedAnswer });
 });
 
+// PATCH code for User: 2 helper functions and endpoints:
+const usersFilePath = path.join(__dirname, '../data/users.json');
+// Helper function 1: to read users from the JSON file
+function readUsers(): User[] {
+  const data = fs.readFileSync(usersFilePath, 'utf-8');
+  return JSON.parse(data);
+}
+// Helper function 2: to write user to the JSON file
+function writeUsers(users: User[]): void {
+  fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+}
+// PATCH endpoint to update users
+app.patch('/users/:id', (req: Request, res: Response) => {
+  const userId = parseInt(req.params.id);
+  const updates = req.body;
+  // Read existing users
+  let users = readUsers();
+  // Find the users by ID
+  const userIndex = users.findIndex((user) => user.id === userId);
+
+  if (userIndex === -1) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+  // Update only the provided fields in the users
+  const updatedUser = { ...users[userIndex], ...updates };
+  // Replace the old users with the updated one
+  users[userIndex] = updatedUser;
+  // Save the updated user array back to the JSON file
+  writeUsers(users);
+
+  res.json({ message: 'Users updated successfully', users: updatedUser });
+});
+
+// PATCH code for Results: 2 helper functions and endpoints:
+const resultsFilePath = path.join(__dirname, '../data/results.json');
+// Helper function 1: to read results from the JSON file
+function readResults(): Result[] {
+  const data = fs.readFileSync(resultsFilePath, 'utf-8');
+  return JSON.parse(data);
+}
+// Helper function 2: to write results to the JSON file
+function writeResults(results: Result[]): void {
+  fs.writeFileSync(resultsFilePath, JSON.stringify(results, null, 2));
+}
+// PATCH endpoint to update results
+app.patch('/results/:id', (req: Request, res: Response) => {
+  const resultId = parseInt(req.params.id);
+  const updates = req.body;
+  // Read existing results
+  let results = readResults();
+  // Find the results by ID
+  const resultIndex = results.findIndex((result) => result.id === resultId);
+
+  if (resultIndex === -1) {
+    return res.status(404).json({ message: 'Result not found' });
+  }
+  // Update only the provided fields in the results
+  const updatedResult = { ...results[resultIndex], ...updates };
+  // Replace the old reults with the updated one
+  results[resultIndex] = updatedResult;
+  // Save the updated results array back to the JSON file
+  writeResults(results);
+
+  res.json({ message: 'Results updated successfully', results: updatedResult });
+});
 
 // The below are the endopoints, we have to update them with the functions we will create inside the classes
 
