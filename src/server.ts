@@ -44,7 +44,7 @@ function readQuizzes(): Quiz[] {
   return JSON.parse(data);
 }
 
-// Helper function 2:to write quizzes to the JSON file
+// Helper function 2: to write quizzes to the JSON file
 function writeQuizzes(quizzes: Quiz[]): void {
   fs.writeFileSync(quizzesFilePath, JSON.stringify(quizzes, null, 2));
 }
@@ -77,6 +77,36 @@ app.patch('/quizzes/:id', (req: Request, res: Response) => {
 });
 
 // PATCH code for Questions: 2 helper functions and endpoints:
+const questionsFilePath = path.join(__dirname, '../data/questions.json');
+// Helper function 1: to read questions from the JSON file
+function readQuestions(): Question[] {
+  const data = fs.readFileSync(questionsFilePath, 'utf-8');
+  return JSON.parse(data);
+}
+// Helper function 2: to write questions to the JSON file
+function writeQuestions(questions: Question[]): void {
+  fs.writeFileSync(questionsFilePath, JSON.stringify(questions, null, 2));
+}
+// PATCH endpoint to update questions
+app.patch('/questions/:id', (req: Request, res: Response) => {
+  const questionId = parseInt(req.params.id);
+  const updates = req.body;
+
+  let questions = readQuestions();
+
+  const questionIndex = questions.findIndex((question) => question.id === questionId);
+
+  if (questionIndex === -1) {
+    return res.status(404).json({ message: 'Question not found' });
+  }
+
+  const updatedQuestion = { ...questions[questionIndex], ...updates };
+  questions[questionIndex] = updatedQuestion;
+
+  writeQuestions(questions);
+
+  res.json({ message: 'Question updated successfully', question: updatedQuestion });
+});
 
 // The below are the endopoints, we have to update them with the functions we will create inside the classes
 
