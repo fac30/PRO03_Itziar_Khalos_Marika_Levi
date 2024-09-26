@@ -39,6 +39,7 @@ app.get("/quizzes", (req: Request, res: Response) => {
 });
 
 // curl -X GET http://localhost:3000/quizzes | jq .
+// The above will get the content as Json files instead of a block of data
 
 app.post("/quizzes", (req: Request, res: Response) => {
   const { name, description, category, difficulty, numberOfQuestions } =
@@ -59,6 +60,7 @@ app.post("/quizzes", (req: Request, res: Response) => {
 
   writeQuizzes(quizzes);
 
+  //status 201 = created
   res.status(201).json(newQuiz);
 });
 
@@ -115,7 +117,7 @@ app.delete("/quizzes/:id", (req: Request, res: Response) => {
 
   writeQuizzes(quizzes);
 
-  // Status code 204: no content --> expected when deleting something
+  // Status code 204: no content
   res.status(204).json();
 });
 
@@ -123,8 +125,25 @@ app.get("/questions", (req: Request, res: Response) => {
   const allQuestions = Question.createQuestionsFromJSON(questionsJson);
   res.json(allQuestions);
 });
+
 app.post("/questions", (req: Request, res: Response) => {
-  res.json("create a new question");
+  const { quizId, text, type, points } = req.body;
+
+  const questions = readQuestions();
+
+  const newQuestion = new Question(
+    questions[questions.length - 1].id + 1,
+    quizId,
+    text,
+    type,
+    points
+  );
+
+  questions.push(newQuestion);
+
+  writeQuestions(questions);
+
+  res.status(201).json(newQuestion);
 });
 
 // PATCH code for Questions: 2 helper functions and endpoints:
@@ -165,16 +184,46 @@ app.patch("/questions/:id", (req: Request, res: Response) => {
   });
 });
 
-app.delete("/questions", (req: Request, res: Response) => {
-  res.json("delete one question");
+//DELETE the question
+app.delete("/questions/:id", (req: Request, res: Response) => {
+  const questionId = parseInt(req.params.id);
+  let questions = readQuestions();
+
+  const questionIndex = questions.findIndex(
+    (question) => question.id === questionId
+  );
+  if (questionIndex === -1) {
+    return res.status(404).json({ message: "Question not found" });
+  }
+  questions.splice(questionIndex, 1);
+
+  writeQuestions(questions);
+
+  res.status(204).json();
 });
 
 app.get("/answers", (req: Request, res: Response) => {
   const allAnswers = Answer.createAnswersFromJSON(answersJson);
   res.json(allAnswers);
 });
+
 app.post("/answers", (req: Request, res: Response) => {
-  res.json("create a new answer");
+  const { questionId, text, isCorrect } = req.body;
+
+  const answers = readAnswers();
+
+  const newAnswer = new Answer(
+    answers[answers.length - 1].id + 1,
+    questionId,
+    text,
+    isCorrect
+  );
+
+  answers.push(newAnswer);
+
+  writeAnswers(answers);
+
+  res.status(201).json(newAnswer);
 });
 
 // PATCH code for Answer: 2 helper functions and endpoints:
@@ -210,16 +259,39 @@ app.patch("/answers/:id", (req: Request, res: Response) => {
   res.json({ message: "Answers updated successfully", answers: updatedAnswer });
 });
 
-app.delete("/answers", (req: Request, res: Response) => {
-  res.json("delete one answer");
+//DELETE the answer
+app.delete("/answers/:id", (req: Request, res: Response) => {
+  const answerId = parseInt(req.params.id);
+  let answers = readAnswers();
+
+  const answerIndex = answers.findIndex((answer) => answer.id === answerId);
+  if (answerIndex === -1) {
+    return res.status(404).json({ message: "Answer not found" });
+  }
+  answers.splice(answerIndex, 1);
+
+  writeAnswers(answers);
+
+  res.status(204).json();
 });
 
 app.get("/users", (req: Request, res: Response) => {
   const allUsers = User.createUsersFromJSON(usersJson);
   res.json(allUsers);
 });
+
 app.post("/users", (req: Request, res: Response) => {
-  res.json("create a new user");
+  const { name, points } = req.body;
+
+  const users = readUsers();
+
+  const newUsers = new User(users[users.length - 1].id + 1, name, points);
+
+  users.push(newUsers);
+
+  writeUsers(users);
+
+  res.status(201).json(newUsers);
 });
 
 // PATCH code for User: 2 helper functions and endpoints:
@@ -255,16 +327,44 @@ app.patch("/users/:id", (req: Request, res: Response) => {
   res.json({ message: "Users updated successfully", users: updatedUser });
 });
 
-app.delete("/users", (req: Request, res: Response) => {
-  res.json("delete one user");
+//DELETE the user
+app.delete("/users/:id", (req: Request, res: Response) => {
+  const userId = parseInt(req.params.id);
+  let users = readUsers();
+
+  const userIndex = users.findIndex((user) => user.id === userId);
+  if (userIndex === -1) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  users.splice(userIndex, 1);
+
+  writeUsers(users);
+
+  res.status(204).json();
 });
 
 app.get("/results", (req: Request, res: Response) => {
   const allResults = Result.createResultsFromJSON(resultsJson);
   res.json(allResults);
 });
+
 app.post("/results", (req: Request, res: Response) => {
-  res.json("create a new result");
+  const { quizId, userId, score } = req.body;
+
+  const results = readResults();
+
+  const newResults = new Result(
+    results[results.length - 1].id + 1,
+    quizId,
+    userId,
+    score
+  );
+
+  results.push(newResults);
+
+  writeResults(results);
+
+  res.status(201).json(newResults);
 });
 
 // PATCH code for Results: 2 helper functions and endpoints:
@@ -300,8 +400,20 @@ app.patch("/results/:id", (req: Request, res: Response) => {
   res.json({ message: "Results updated successfully", results: updatedResult });
 });
 
-app.delete("/results", (req: Request, res: Response) => {
-  res.json("delete one result");
+//DELETE the result
+app.delete("/results/:id", (req: Request, res: Response) => {
+  const resultId = parseInt(req.params.id);
+  let results = readResults();
+
+  const resultIndex = results.findIndex((result) => result.id === resultId);
+  if (resultIndex === -1) {
+    return res.status(404).json({ message: "Result not found" });
+  }
+  results.splice(resultIndex, 1);
+
+  writeResults(results);
+
+  res.status(204).json();
 });
 
 app.listen(port, () => {
