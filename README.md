@@ -105,9 +105,9 @@ The server will start on the specified port, and you can access it at http://loc
 
 ### Relationships Between Objects:
 
-- \*_Quiz to Question_
+- **Quiz to Question**
 - **Question to Answer**
-- \*_User to Quiz Result_
+- **User to Quiz Result**
 - **Quiz to Quiz Result**
 
 ## API Endpoints

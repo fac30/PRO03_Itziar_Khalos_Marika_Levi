@@ -94,13 +94,5 @@
     "category": "Movie",
     "difficulty": "Hard",
     "numberOfQuestions": 8
-  },
-  {
-    "id": 16,
-    "name": "Jons questions",
-    "description": "THe best quiz ever",
-    "category": "Divine",
-    "difficulty": "Hell",
-    "numberOfQuestions": 42
   }
 ]
