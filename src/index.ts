@@ -13,11 +13,11 @@ import questionsJson from "../data/questions.json";
 import resultsJson from "../data/results.json";
 import usersJson from "../data/users.json";
 
-import { Answer } from "./models/answer.ts";
-import { Question } from "./models/question.ts";
-import { Quiz } from "./models/quiz.ts";
-import { Result } from "./models/result.ts";
-import { User } from "./models/user.ts";
+import { Answer } from "./models/answer";
+import { Question } from "./models/question";
+import { Quiz } from "./models/quiz";
+import { Result } from "./models/result";
+import { User } from "./models/user";
 
 dotenv.config();
 
