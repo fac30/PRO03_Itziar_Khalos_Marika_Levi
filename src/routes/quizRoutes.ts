@@ -5,6 +5,7 @@ import { calculateScore, submitResult } from '../services/quizService'; // Impor
 import { getSpotifyTrackByScore } from '../services/spotifyService'; // Import Spotify service
 
 const router = express.Router();
+const totalQuestions = 10; // You might want to fetch this dynamically based on the quiz
 
 // Endpoint to submit an answer and retrieve a meme
 router.post('/submit-answer', async (req, res) => {
@@ -22,7 +23,7 @@ router.post('/submit-answer', async (req, res) => {
     const result = submitResult(quizId, userId, score);
 
     // Get the corresponding Spotify track based on the score
-    const trackUrl = await getSpotifyTrackByScore(result.score);
+    const trackUrl = await getSpotifyTrackByScore(result.score, totalQuestions);
 
     res.json({
       success: true,
