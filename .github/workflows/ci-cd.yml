@@ -1,14 +1,11 @@
-name: Deploy to EC2
-name: Deploy to EC2
+name: Deploy to EC2.
 
 on:
   push:
     branches:
       - deploy
-      - deploy
 
 jobs:
-  deploy:
   deploy:
     runs-on: ubuntu-latest
 
@@ -33,10 +30,11 @@ jobs:
         HOST: ${{ secrets.EC2_HOST }}
         USER: ${{ secrets.EC2_USER }}
       run: |
-        echo "$PRIVATE_KEY" > Wisdom_wars.pem
-        chmod 600 Wisdom_wars.pem
-        scp -i Wisdom_wars.pem -r ./build ec2-user@$ip-172-31-20-192.eu-west-2.compute.internal:/home/ec2-user/var/www/quizapp
-        ssh -i Wisdom_wars.pem ec2-user@$ip-172-31-20-192.eu-west-2.compute.internal 'cd /home/ec2-user/var/www/quizapp && npm install && npm start'
+        echo "$PRIVATE_KEY" > private_key.pem
+        chmod 600 private_key.pem
+        scp -i private_key.pem -r ./build $USER@$HOST:/home/ec2-user/var/www/quizapp
+        ssh -i private_key.pem $USER@$HOST 'cd /home/ec2-user/var/www/quizapp/PR0 && npm install && npm start'
+
 
 
 
