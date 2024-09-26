@@ -32,8 +32,8 @@ jobs:
       run: |
         echo "$PRIVATE_KEY" > private_key.pem
         chmod 600 private_key.pem
-        scp -i private_key.pem -r ./build $USER@$HOST:/home/ec2-user/var/www/quizapp
-        ssh -i private_key.pem $USER@$HOST 'cd /home/ec2-user/var/www/quizapp/PR0 && npm install && npm start'
+        scp -i private_key.pem -r ./build $USER@$HOST:/home/ec2-user/var/www/quizapp/PRO03_Itziar_Khalos_Marika_Levi
+        ssh -i private_key.pem $USER@$HOST 'cd /home/ec2-user/var/www/quizapp/PRO03_Itziar_Khalos_Marika_Levi && sudo npm install && sudo npm run dev'
 
 
 
