@@ -1,7 +1,7 @@
 // src/routes/quizRoutes.ts
 import express from 'express';
 import { getMemeForAnswer } from '../services/giphyService';
-import { calculateAnswer } from '../services/quizService'; // This function does not exist yet
+//import { calculateAnswer } from '../services/quizService'; // This function does not exist yet
 
 const router = express.Router();
 
@@ -11,16 +11,16 @@ router.post('/submit-answer', async (req, res) => {
 
   try {
     // Logic to check if the answer is correct
-    const isCorrect = calculateAnswer(questionId, userAnswer);
+    // const isCorrect = calculateAnswer(questionId, userAnswer);
 
-    // Fetch the appropriate meme (positive for correct, negative for incorrect)
-    const memeUrl = await getMemeForAnswer(isCorrect);
+    // // Fetch the appropriate meme (positive for correct, negative for incorrect)
+    // const memeUrl = await getMemeForAnswer(isCorrect);
 
-    res.json({
-      success: true,
-      isCorrect,
-      memeUrl, // Return the meme URL in the response
-    });
+    // res.json({
+    //   success: true,
+    //   isCorrect,
+    //   memeUrl, // Return the meme URL in the response
+    // });
   } catch (error) {
     console.error('Error in /submit-answer:', error);
     res.status(500).json({ success: false, message: 'Something went wrong.' });
