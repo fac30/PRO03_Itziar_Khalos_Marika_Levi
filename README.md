@@ -271,3 +271,46 @@ curl -X PATCH http://localhost:3000/results/1 \
 ```bash
 curl -X DELETE http://localhost:3000/results/1
 ```
+## FOLDER STRUCTURE
+/TheWisdomWar
+│
+├── data                    # Store mock data, such as JSON files for questions, answers
+│   ├── quiz.json          # Mock data of quiz categories and levels of difficulty.
+│   ├── answers.json       # Mock data for quiz answers
+│   ├── questions.json     # Mock data for quiz questions
+│   ├── results.json       # Empty array of results which will be updated dynamically
+│   └── users.json            # Mock data for users and scores
+│ 
+├── dist
+│   └── index.js   # typescript translated into js for node enviroment
+│
+├── /src
+│   ├── /config               # Configuration files for APIs, environment variables, etc.
+│   │   └── apiConfig.ts          # Contains configuration for Giphy, Spotify, etc.
+│   │
+│   ├── /modeles              # TypeScript interfaces for strong typing
+│   │   ├── answer.ts          # Interface for quiz answers
+│   │   ├── question.ts            # Interface for quiz questions
+│   │   ├── quiz.ts               # interface for quiz
+│   │   ├── result.ts             # interface for results
+│   │   ├── user.ts              # Interface for user information
+│   │   └── quizWithQuestions.ts  #Interface that extends Quiz and adds questions/answers
+│   │
+│   ├── /routes                  # Express routing layer (defines API routes)
+│   │   ├── quizRoutes.ts         # Routes for quiz operations (questions, answers, score)
+│   │   ├── userRoutes.ts         # Routes for managing users and scoreboard
+│   │   └── apiRoutes.ts          # Routes for external API interaction (Giphy, Spotify)
+│   │
+│   ├── /services                # Service layer for business logic and API integrations
+│   │   ├── quizService.ts        # Core logic for quiz generation, question selection
+│   │   ├── giphyService.ts       # Giphy API integration logic (fetching memes)
+│   │   └── spotifyService.ts     # Spotify API integration (fetching songs)
+│   │
+│   ├── index.ts                # Server configuration and initialization
+│   └── tsconfig.json            # TypeScript configuration
+│
+│
+├── .env                         # Environment variables for API keys (Giphy, Spotify)
+├── package.json                 # Node.js dependencies and scripts
+├── README.md                    # Documentation for project setup, API endpoints, etc.
+└── .gitignore # Lock file for package versions
