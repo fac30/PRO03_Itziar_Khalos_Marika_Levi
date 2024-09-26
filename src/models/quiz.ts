@@ -1,6 +1,3 @@
-import fs from "fs";
-import path from "path";
-
 class Quiz {
   id: number;
   name: string;
