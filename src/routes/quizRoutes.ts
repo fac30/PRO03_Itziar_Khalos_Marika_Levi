@@ -1,25 +1,34 @@
 // src/routes/quizRoutes.ts
 import express from 'express';
 import { getMemeForAnswer } from '../services/giphyService';
-import { calculateAnswer } from '../services/quizService'; // This function does not exist yet
+import { calculateScore, submitResult } from '../services/quizService'; // Import calculateScore and submitResult
+import { getSpotifyTrackByScore } from '../services/spotifyService'; // Import Spotify service
 
 const router = express.Router();
 
 // Endpoint to submit an answer and retrieve a meme
 router.post('/submit-answer', async (req, res) => {
-  const { questionId, userAnswer } = req.body;
+  const { questionId, userAnswer, quizId, userId } = req.body; // Also expect quizId and userId
 
   try {
     // Logic to check if the answer is correct
-    const isCorrect = calculateAnswer(questionId, userAnswer);
+    const isCorrect = calculateScore(quizId, [{ questionId, selectedAnswerId: userAnswer }]) > 0;
 
     // Fetch the appropriate meme (positive for correct, negative for incorrect)
     const memeUrl = await getMemeForAnswer(isCorrect);
 
+    // Update the score and submit result if the quiz is completed
+    const score = isCorrect ? 1 : 0; // Simplified for example
+    const result = submitResult(quizId, userId, score);
+
+    // Get the corresponding Spotify track based on the score
+    const trackUrl = await getSpotifyTrackByScore(result.score);
+
     res.json({
       success: true,
       isCorrect,
-      memeUrl, // Return the meme URL in the response
+      memeUrl,
+      trackUrl, // Return the track URL in the response
     });
   } catch (error) {
     console.error('Error in /submit-answer:', error);

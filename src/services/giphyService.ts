@@ -6,10 +6,10 @@ export const getMemeForAnswer = async (isCorrect: boolean): Promise<string> => {
   const positiveTags = ['happy', 'yay', 'celebration', 'thumbs up'];
   const negativeTags = ['fail', 'oops', 'sad', 'thumbs down'];
 
-  // If the answer is correct, fetch a positive meme, otherwise a negative meme
+  // Choose tag based on correctness
   const tag = isCorrect
-    ? positiveTags[Math.floor(Math.random() * positiveTags.length)]  // Random positive tag
-    : negativeTags[Math.floor(Math.random() * negativeTags.length)]; // Random negative tag
+    ? positiveTags[Math.floor(Math.random() * positiveTags.length)]
+    : negativeTags[Math.floor(Math.random() * negativeTags.length)];
 
   // Fetch the meme from Giphy
   const memeUrl = await fetchGiphyMeme(tag);
