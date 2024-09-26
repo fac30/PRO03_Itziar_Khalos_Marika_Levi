@@ -1,7 +1,8 @@
+import * as fs from 'fs';
+import * as path from 'path';
+import { Response } from 'express';
+
 class Quiz {
-  save(quizzesFilePath: string, arg1: (err: NodeJS.ErrnoException | null) => import("express").Response<any, Record<string, any>> | undefined) {
-    throw new Error("Method not implemented.");
-  }
   id: number;
   name: string;
   description: string;
@@ -25,8 +26,37 @@ class Quiz {
     this.numberOfQuestions = numberOfQuestions;
   }
 
-  // with static the function is part of the blueprint, and not of the instance.
-  // You can call the function using the class --> class.createQuizzesFromJSON()
+  // Method to save a quiz to the JSON file
+  save(quizzesFilePath: string, callback: (err: NodeJS.ErrnoException | null) => Response | undefined): void {
+    // Ensure the directory exists
+    const dir = path.dirname(quizzesFilePath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+
+    // Ensure the file exists
+    if (!fs.existsSync(quizzesFilePath)) {
+      fs.writeFileSync(quizzesFilePath, '[]');
+    }
+
+    // Read the existing quizzes from the JSON file
+    fs.readFile(quizzesFilePath, 'utf8', (err, data: string) => {
+      if (err) {
+        return callback(err);
+      }
+
+      // Parse the JSON data
+      const quizzes: Quiz[] = JSON.parse(data);
+
+      // Add the new quiz to the list
+      quizzes.push(this);
+
+      // Write the updated quizzes array back to the file
+      fs.writeFile(quizzesFilePath, JSON.stringify(quizzes, null, 2), callback);
+    });
+  }
+
+  // Static method to create quizzes from JSON data
   static createQuizzesFromJSON(jsonData: any[]): Quiz[] {
     const quizzesList: Quiz[] = [];
     for (const quiz of jsonData) {
@@ -44,8 +74,8 @@ class Quiz {
     return quizzesList;
   }
 
-   // Simulate the POST request using console.log
-   static postQuiz(
+  // Simulate the POST request using console.log
+  static postQuiz(
     quizName: string, 
     quizDescription: string, 
     quizCategory: string, 
@@ -54,7 +84,7 @@ class Quiz {
   ): void {
     // Simulate logging the POST request
     console.log(`[server]: Received POST request to /quizzes/${quizName}/quizs`);
-    console.log(`[server]: Question submitted:`);
+    console.log(`[server]: Quiz submitted:`);
     console.log(`    description: ${quizDescription}`);
     console.log(`    category: ${quizCategory}`);
     console.log(`    difficulty: ${quizDifficulty}`);
@@ -63,3 +93,4 @@ class Quiz {
 }
 
 export { Quiz };
+
