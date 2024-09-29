@@ -30,10 +30,10 @@ jobs:
         HOST: ${{ secrets.EC2_HOST }}
         USER: ${{ secrets.EC2_USER }}
       run: |
-        echo "$PRIVATE_KEY" > private_key.pem
-        chmod 600 private_key.pem
-        scp -i private_key.pem -r /Users/lee/PRO03_Itziar_Khalos_Marika_Levi $USER@$HOST:/home/ec2-user/var/www/quizapp/PRO03_Itziar_Khalos_Marika_Levi
-        ssh -i private_key.pem $USER@$HOST 'cd /home/ec2-user/var/www/quizapp/PRO03_Itziar_Khalos_Marika_Levi && sudo npm install && sudo npm run dev'
+        echo "$PRIVATE_KEY" > Wisdom_wars.pem
+        chmod 600 Wisdom_wars.pem
+        scp -i Wisdom_wars.pem -r /Users/lee/PRO03_Itziar_Khalos_Marika_Levi $USER@$HOST:/home/ec2-user/var/www/quizapp/PRO03_Itziar_Khalos_Marika_Levi
+        ssh -i Wisdom_wars.pem $USER@$HOST 'cd /home/ec2-user/var/www/quizapp/PRO03_Itziar_Khalos_Marika_Levi && sudo npm install && sudo npm run dev'
 
 
 
