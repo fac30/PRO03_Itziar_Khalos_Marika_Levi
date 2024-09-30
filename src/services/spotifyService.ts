@@ -1,49 +1,34 @@
-// src/services/spotifyService.ts
+import spotifyApi, { getSpotifyAccessToken } from '../config/spotifyConfig';
 
-import spotifyApi, { getSpotifyAccessToken } from '../config/apiConfig';
+const scoreTrackMap: { [key: number]: string } = {
+  10: '3n3Ppam7vgaVa1iaRUc9Lp',  // Happy track ID
+  9: '7ouMYWpwJ422jRcDASZB7P',   // Slightly happy track ID
+  8: '4cOdK2wGLETKBW3PvgPWqT',   // Track example
+  7: '1dGr1c8CrMLDpV6mPbImSI',
+  6: '2takcwOaAZWiXQijPHIx7B',
+  5: '1hKdDCpiI9mqz1jVHRKG0E',
+  4: '6zspalBd1ZexrQNXYzLOhS',
+  3: '5IX4TbInV0jbu1MQhkljbI',
+  2: '7fHbikDD4ld6xwr5xFybW0',
+  1: '0U6ldwLBEMkwgfQRY4V6D2',
+  0: '6uFn47ACjqYkc0jADwEdj1'    // Saddest track ID
+};
 
-// Function to get a track based on the user's quiz score
-export const getSpotifyTrackByScore = async (score: number, totalQuestions: number): Promise<string> => {
-  // Calculate the score as a percentage
-  const percentageScore = Math.round((score / totalQuestions) * 10); // Scale to 0-10 range
-
-  // Ensure the percentage score is within the range of 0-10
-  const finalScore = Math.max(0, Math.min(10, percentageScore)); 
-
-  // Mapping scores to different track IDs
-  const scoreTrackMap: { [key: number]: string } = {
-    10: '3n3Ppam7vgaVa1iaRUc9Lp',   // "Happy" - Pharrell Williams
-    9:  '7ouMYWpwJ422jRcDASZB7P',    // "Good Vibrations" - The Beach Boys
-    8:  '1wF5hMlZBrzOqkvbFgf2Iq',    // "Walking on Sunshine" - Katrina and the Waves
-    7:  '2JwD2kG2h0L0aV3XfyTQkD',    // "Best Day of My Life" - American Authors
-    6:  '4uLU8n9C8th0p5LR1syPqa',    // "Shut Up and Dance" - WALK THE MOON
-    5:  '1yoJjPLsNohWqCw4J68ZPw',    // "Uptown Funk" - Mark Ronson ft. Bruno Mars
-    4:  '2YZXY6ImPIv1D2UMe4Zz2D',    // "Count on Me" - Bruno Mars
-    3:  '6nT9uvE8M5KxLM4cd42YkU',    // "I'm Still Standing" - Elton John
-    2:  '5JdQ3bq6tUeXhddK0rKcG9',    // "I Will Survive" - Gloria Gaynor
-    1:  '3Zl23hQ4DbjC7vUOr0XhZ1',    // "Someone Like You" - Adele
-    0:  '6uFn47ACjqYkc0jADwEdj1',    // "Tears Dry on Their Own" - Amy Winehouse
-  };
-
+// Function to get a track based on the score
+export const getSpotifyTrackByScore = async (score: number): Promise<string> => {
   try {
-    // Ensure we have a valid access token
-    await getSpotifyAccessToken();
+    await getSpotifyAccessToken();  // Ensure access token is available
 
-    // Fetch the track ID based on the calculated percentage score
-    const trackId = scoreTrackMap[finalScore]; 
-
-    // Fetch the track data from Spotify API
+    const trackId = scoreTrackMap[score] || scoreTrackMap[0];  // Default to saddest track if score is invalid
     const track = await spotifyApi.getTrack(trackId);
 
-    // Check if the preview URL exists, otherwise return a default or handle it
-    const previewUrl = track.body.preview_url;
-    if (previewUrl) {
-      return previewUrl;  // Return the track's preview URL if available
+    if (track.body.preview_url) {
+      return track.body.preview_url;  // Return the track's preview URL
     } else {
-      throw new Error('Preview URL not available for this track');
+      throw new Error('No preview URL available');
     }
   } catch (error) {
-    console.error('Error fetching track from Spotify:', error);
+    console.error('Error fetching track:', error);
     throw error;
   }
 };

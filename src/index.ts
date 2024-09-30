@@ -1,7 +1,7 @@
 // src/index.js
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-import apiRoutes from "./routes/apiRoutes";
+import apiRoutes from "./routes/spotifyRoutes.ts";
 // fs is used to read from and write to JSON files, like quiz.json or questions.json.
 import fs from "fs";
 // The path module resolves paths to the JSON files you're interacting with (e.g., quiz.json, questions.json).
