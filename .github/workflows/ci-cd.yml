@@ -32,8 +32,7 @@ jobs:
       run: |
         echo "$PRIVATE_KEY" > Wisdom_wars.pem
         chmod 600 Wisdom_wars.pem
-        scp -i Wisdom_wars.pem -r /Users/lee/PRO03_Itziar_Khalos_Marika_Levi $USER@$HOST:/home/ec2-user/var/www/quizapp/PRO03_Itziar_Khalos_Marika_Levi
-        ssh -i Wisdom_wars.pem $USER@$HOST 'cd /home/ec2-user/var/www/quizapp/PRO03_Itziar_Khalos_Marika_Levi && sudo npm install && sudo npm run dev'
+        scp -i Wisdom_wars.pem -r ./dist $USER@$HOST:/home/ec2-user/quizapp
 
 
 
