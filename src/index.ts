@@ -19,6 +19,8 @@ import { Quiz } from "./models/quiz.ts";
 import { Result } from "./models/result.ts";
 import { User } from "./models/user.ts";
 
+import quizRoutes from './routes/quizRoutes'; // Ensure correct path to quizRoutes
+
 dotenv.config();
 
 const app: Express = express();
@@ -26,6 +28,9 @@ const app: Express = express();
 app.use(express.json());
 // Use the API routes
 app.use("/api", apiRoutes);
+
+// Use quizRoutes for all /quiz related routes
+app.use(quizRoutes);
 
 const port = process.env.PORT || 3000;
 

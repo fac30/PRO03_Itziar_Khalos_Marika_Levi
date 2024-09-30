@@ -1,3 +1,4 @@
+/* 
 import { Router } from 'express';
 import { getMemeForAnswer } from '../services/giphyService';
 
@@ -14,4 +15,4 @@ router.post('/submit-answer', async (req, res) => {
   }
 });
 
-export default router;
+export default router; */
