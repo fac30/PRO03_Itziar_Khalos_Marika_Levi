@@ -378,3 +378,155 @@ curl -X DELETE http://localhost:3000/results/1
 ├── package.json                 # Node.js dependencies and scripts
 ├── README.md                    # Documentation for project setup, API endpoints, etc.
 └── .gitignore # Lock file for package versions
+
+## APIs Overview
+This Quiz App allows users to answer a customizable set of quiz questions, get feedback in the form of a GIF (using Giphy API), and listen to relaxing background music (using Spotify API) while taking the quiz.
+
+- Giphy Integration: Displays a GIF based on the user's quiz score. The GIFs range from celebratory (100% correct answers) to fun/fail (0% correct answers).
+- Spotify Integration: Plays a random background playlist (e.g., classical music, movie soundtracks) while the user is on the quiz page.
+
+### Giphy Integration
+#### Giphy Setup
+1. Giphy API Key:
+
+You need to register on Giphy Giphy Developers and get an API key. This key is necessary to fetch GIFs based on the score the user receives in the quiz.
+
+2. .env File Configuration:
+
+Store the Giphy API key securely in an .env file:
+```
+GIPHY_API_KEY=your_giphy_api_key_here
+```
+#### Giphy Service Implementation
+The giphyService.ts file contains the core logic for interacting with the Giphy API.
+
+Giphy API Logic:
+- Based on the user's quiz score (0-100%), the app fetches a GIF using Giphy's Random GIF API.
+- The score is divided into intervals (100%, 90%, 80%, etc.) to get different GIFs for different ranges.
+```typescript
+import axios from 'axios';
+
+export async function getGiphyByScore(score: number): Promise<string> {
+  try {
+    const positivity = score >= 80 ? 'positive' : 'negative';
+    const response = await axios.get(
+      `https://api.giphy.com/v1/gifs/random?api_key=${process.env.GIPHY_API_KEY}&tag=${positivity}`
+    );
+    
+    return response.data.data.images.original.url; // Returns the GIF URL
+  } catch (error) {
+    console.error('Error fetching Giphy:', error);
+    throw new Error('Failed to fetch GIF from Giphy.');
+  }
+}
+```
+
+#### Testing Giphy
+To test the Giphy integration, you can use the following cURL command, which simulates an API request:
+
+```bash
+curl "http://localhost:3000/api/test-giphy?score=90"
+```
+
+The score parameter can be any number between 0 and 100, and based on this score, the app will return a GIF URL.
+
+### Spotify Integration
+#### Spotify Setup
+1. Spotify Developer Account:
+
+You need a Spotify Developer account. Head over to Spotify for Developers and create an app to get the Client ID and Client Secret.
+
+2. Spotify API Keys:
+
+Add your Spotify credentials to the .env file:
+```
+SPOTIFY_CLIENT_ID=your_spotify_client_id_here
+SPOTIFY_CLIENT_SECRET=your_spotify_client_secret_here
+```
+#### Spotify Service Implementation
+The spotifyService.ts file implements the logic to retrieve a random playlist for background music.
+
+- Spotify API Logic:
+The app authenticates with the Spotify API using Client Credentials Flow.
+- A random playlist URL (e.g., classical music or movie soundtracks) is fetched and returned.
+```typescript
+import SpotifyWebApi from 'spotify-web-api-node';
+
+const spotifyApi = new SpotifyWebApi({
+  clientId: process.env.SPOTIFY_CLIENT_ID,
+  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+});
+
+async function authenticateSpotify() {
+  const data = await spotifyApi.clientCredentialsGrant();
+  spotifyApi.setAccessToken(data.body['access_token']);
+}
+
+export async function getRandomBackgroundPlaylist(): Promise<string> {
+  try {
+    await authenticateSpotify();
+
+    const playlistIds = [
+      '37i9dQZF1DWWEJlAGA9gs0', // Classical Essentials
+      '37i9dQZF1DX4sWSpwq3LiO', // Movie Soundtracks
+      '37i9dQZF1DWXRqgorJj26U', // Calm Vibes
+    ];
+
+    const randomPlaylistId = playlistIds[Math.floor(Math.random() * playlistIds.length)];
+    return `https://open.spotify.com/playlist/${randomPlaylistId}`;
+  } catch (error) {
+    console.error('Error fetching Spotify playlist:', error);
+    throw new Error('Failed to fetch background playlist from Spotify.');
+  }
+}
+```
+
+#### Testing Spotify
+You can test the Spotify integration by hitting the following endpoint with a cURL command:
+
+```bash
+curl "http://localhost:3000/api/spotify/background-playlist"
+```
+
+The response will return a playlist URL that will play background music on the quiz page.
+
+#### Running the Project
+1. Install Dependencies: Run the following command to install all necessary Node.js modules:
+
+```bash
+npm install
+```
+
+2. Start the Server: Use the following command to start the server:
+
+```bash
+npm run dev
+```
+
+3. Test the API: You can test the API routes via cURL commands or tools like Postman to ensure that both Giphy and Spotify integrations are working.
+
+#### How to Test
+You can test the Giphy and Spotify services by making HTTP requests using cURL or Postman.
+
+- Test Giphy:
+
+```bash
+curl "http://localhost:3000/api/test-giphy?score=90"
+```
+
+This will return a URL to a GIF based on the user's score.
+
+- Test Spotify:
+
+```bash
+curl "http://localhost:3000/api/spotify/background-playlist"
+```
+
+This will return a URL to a random background playlist from Spotify.
+
+#### Future Enhancements
+- React Frontend: The current implementation is backend-focused. In the future, we can build a React-based frontend to display the GIFs dynamically and control Spotify playback via a UI controller.
+
+- Controller for Background Music: In the React frontend, we can add a controller for Spotify playback, allowing users to mute the music or skip to the next random playlist.
+
+- More GIF and Playlist Variety: Expand the range of GIFs and background playlists to provide more variety and make the user experience more engaging.
