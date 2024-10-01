@@ -15,10 +15,11 @@ function shuffledArray(array: any[]) {
         // swap the element at index i with the element at randomChoice
         [array[i], array[randomChoice]] = [array[randomChoice], array[i]];
     }
+    return array;
 }
 
 // Function to get random questions based on subject and number of questions
-function getRandomQuestions(category: string) {
+export function getRandomQuestions(category: string) {
     // Step 1: Filter quizzes by category (subject)
     const selectQuiz = quizzesJson.filter((quiz: { category: string }) => {
         return quiz.category.toLowerCase() === category.toLowerCase();
@@ -30,17 +31,28 @@ function getRandomQuestions(category: string) {
         return [];
     }
 
-     // Step 3: Choose the first matching quiz
-     const selecteQuiz = selectQuiz[0];
+    // Step 3: Get questions from questionsJson that match the selected quiz category
+    const relatedQuestions = questionJson.filter((question: { category: string }) => {
+        return question.category.toLowerCase() === category.toLowerCase();
+    });
 
 
     // Step 4: Shuffle the filtered questions to randomise the selection
-    const shuffleQuestions = shuffledArray(selectQuiz);
+    return shuffledArray(relatedQuestions);
+}
+
+// Function to display the quiz questions to the user
+function displayQuiz(questions: any[]) {
+    questions.forEach((q, index) => {
+        console.log(`Question ${index + 1}: ${q.question}`);
+    });
 }
 
 
+
 // Function to process user answers and calculate the result
-function processQuizAnswers(userId: number, quizId: number, userAnswers: { questionId: number, answer: string }[]) {
+export function processQuizAnswers(userId: number, quizId: number, userAnswers: { questionId: number, answer: string }[]) {
+    
     let totalCorrect = 0;
    
 
