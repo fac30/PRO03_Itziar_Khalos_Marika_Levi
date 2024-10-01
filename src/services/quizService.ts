@@ -32,8 +32,8 @@ export function getRandomQuestions(category: string) {
     }
 
     // Step 3: Get questions from questionsJson that match the selected quiz category
-    const relatedQuestions = questionJson.filter((question: { category: string }) => {
-        return question.category.toLowerCase() === category.toLowerCase();
+    const relatedQuestions = questionJson.filter((question: { quizId: number }) => {
+        return question.quizId === selectQuiz[0].id; 
     });
 
 
