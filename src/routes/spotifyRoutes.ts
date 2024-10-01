@@ -1,25 +1,22 @@
-import { Router } from 'express';
-import { getSpotifyTrackByScore } from '../services/spotifyService';
+// src/routes/spotifyRoutes.ts
+import express from 'express';
+import { getRandomBackgroundPlaylist } from '../services/spotifyService';
 
-const router = Router();
+const router = express.Router();
 
-// Endpoint to get a Spotify track based on the quiz score
-router.get('/spotify-track', async (req, res) => {
-  const score = parseInt(req.query.score as string, 10);
-
-  if (isNaN(score) || score < 0 || score > 10) {
-    return res.status(400).json({ error: 'Invalid score. Must be between 0 and 10.' });
-  }
-
+// Route to get a random background playlist
+router.get('/background-playlist', async (req, res) => {
   try {
-    const trackUrl = await getSpotifyTrackByScore(score);
-    res.json({ trackUrl });
+    const playlistUrl = await getRandomBackgroundPlaylist();
+    res.json({
+      success: true,
+      playlistUrl,
+    });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch track from Spotify.' });
+    console.error('Error in /api/spotify/background-playlist:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch background playlist from Spotify.' });
   }
 });
-
-
 
 export default router;
 

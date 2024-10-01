@@ -1,6 +1,7 @@
 import express from 'express';
 import { calculateScore, submitResult } from '../services/quizService'; 
 import { getGiphyByScore } from '../services/giphyService';
+import { getRandomBackgroundPlaylist } from '../services/spotifyService';
 
 const router = express.Router();
 
@@ -57,5 +58,19 @@ router.get('/test-giphy', async (req, res) => {
 });
 // end of test
 
+router.get('/background-playlist', async (req, res) => {
+  try {
+    // Call the service to get a random background playlist
+    const playlistUrl = await getRandomBackgroundPlaylist();
+    
+    res.json({
+      success: true,
+      playlistUrl, // Return the playlist URL
+    });
+  } catch (error) {
+    console.error('Error fetching Spotify playlist:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch background playlist from Spotify.' });
+  }
+});
 
 export default router;

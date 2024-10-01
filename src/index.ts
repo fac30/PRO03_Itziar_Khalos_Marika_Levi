@@ -1,7 +1,6 @@
 // src/index.js
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-import apiRoutes from "./routes/spotifyRoutes.ts";
 // fs is used to read from and write to JSON files, like quiz.json or questions.json.
 import fs from "fs";
 // The path module resolves paths to the JSON files you're interacting with (e.g., quiz.json, questions.json).
@@ -20,6 +19,8 @@ import { Result } from "./models/result.ts";
 import { User } from "./models/user.ts";
 
 import quizRoutes from './routes/quizRoutes'; // Ensure correct path to quizRoutes
+import spotifyRoutes from './routes/spotifyRoutes';
+// Importing Spotify integration
 
 dotenv.config();
 
@@ -27,8 +28,8 @@ const app: Express = express();
 // Configuring the Express application to automatically parse incoming JSON payloads from the request body.
 app.use(express.json());
 // Use the API routes
-app.use("/api", apiRoutes);
-
+app.use('/api', spotifyRoutes);
+app.use('/api/spotify', quizRoutes);
 // Use quizRoutes for all /quiz related routes
 app.use(quizRoutes);
 
