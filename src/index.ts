@@ -29,6 +29,17 @@ app.use("/api", apiRoutes);
 
 const port = process.env.PORT || 3000;
 
+
+var cors = require('cors');
+
+// CORS options to allow requests from your local frontend
+var corsOptions = {
+  origin: 'http://localhost:5173',  // Allow only frontend running on localhost
+};
+
+// Apply the CORS middleware with the specified options
+app.use(cors(corsOptions));
+
 app.get("/", (req: Request, res: Response) => {
   res.send("Wisdom War Server");
 });
