@@ -1,4 +1,5 @@
 // src/index.js
+import cors from 'cors'; 
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -22,6 +23,14 @@ import { User } from "./models/user.ts";
 
 dotenv.config();
 
+const corsOptions = {
+  origin: 'http://localhost:5173',  // Your frontend URL
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'], // Allowed methods
+  credentials: true, // Allow credentials like cookies
+};
+
+
+
 const app: Express = express();
 // Configuring the Express application to automatically parse incoming JSON payloads from the request body.
 app.use(express.json());
@@ -37,6 +46,8 @@ app.use(
 );
 
 const port = process.env.PORT || 3000;
+
+app.use(cors(corsOptions));
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Wisdom War Server");
