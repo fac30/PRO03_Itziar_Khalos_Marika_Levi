@@ -1,5 +1,6 @@
 // src/index.js
 import express, { Express, Request, Response } from "express";
+import cors from "cors";
 import dotenv from "dotenv";
 import apiRoutes from "./routes/apiRoutes";
 // fs is used to read from and write to JSON files, like quiz.json or questions.json.
@@ -27,6 +28,14 @@ app.use(express.json());
 // Use the API routes
 app.use("/api", apiRoutes);
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    credentials: true, // If you are using cookies or authentication
+  })
+);
+
 const port = process.env.PORT || 3000;
 
 app.get("/", (req: Request, res: Response) => {
@@ -35,6 +44,10 @@ app.get("/", (req: Request, res: Response) => {
 
 app.get("/quizzes", (req: Request, res: Response) => {
   const allQuizzes = Quiz.createQuizzesFromJSON(quizzesJson);
+  // for each quiz
+  // get all questions belonging to that quiz
+  // get the length of the questions
+  // assign it as property for that quiz
   res.json(allQuizzes);
 });
 
@@ -42,8 +55,7 @@ app.get("/quizzes", (req: Request, res: Response) => {
 // The above will get the content as Json files instead of a block of data
 
 app.post("/quizzes", (req: Request, res: Response) => {
-  const { name, description, category, difficulty, numberOfQuestions } =
-    req.body;
+  const { name, description, category, difficulty } = req.body;
 
   const quizzes = readQuizzes();
 
@@ -52,8 +64,7 @@ app.post("/quizzes", (req: Request, res: Response) => {
     name,
     description,
     category,
-    difficulty,
-    numberOfQuestions
+    difficulty
   );
 
   quizzes.push(newQuiz);
