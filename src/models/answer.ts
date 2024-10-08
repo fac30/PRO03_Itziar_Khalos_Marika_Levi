@@ -2,9 +2,9 @@
 
 class Answer {
   id: number;
-  questionId: number;
+  questionId?: number;
   text: string;
-  isCorrect: boolean;
+  isCorrect?: boolean;
 
   constructor(
     id: number,

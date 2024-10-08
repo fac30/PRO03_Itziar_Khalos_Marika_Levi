@@ -17,6 +17,7 @@ import { Question } from "./models/question.ts";
 import { Quiz } from "./models/quiz.ts";
 import { Result } from "./models/result.ts";
 import { User } from "./models/user.ts";
+import { all } from "axios";
 
 dotenv.config();
 
@@ -123,8 +124,28 @@ app.delete("/quizzes/:id", (req: Request, res: Response) => {
 });
 
 app.get("/questions", (req: Request, res: Response) => {
-  const allQuestions = Question.createQuestionsFromJSON(questionsJson);
-  res.json(allQuestions);
+  const allAnswers = Answer.createAnswersFromJSON(answersJson);
+  let allQuestions = Question.createQuestionsFromJSON(questionsJson).map(
+    (question) => {
+      const questionAnswers = allAnswers
+        .filter((answer) => answer.questionId === question.id)
+        .map((qa) => {
+          delete qa["isCorrect"];
+          delete qa["questionId"];
+          return qa;
+        });
+      question["answers"] = questionAnswers;
+      return question;
+    }
+  );
+
+  const quizId = parseInt(req.query.quizId as string);
+  if (!quizId) {
+    res.json(allQuestions);
+  } else {
+    const filteredQuestions = allQuestions.filter((e) => e.quizId === quizId);
+    res.json(filteredQuestions);
+  }
 });
 
 app.post("/questions", (req: Request, res: Response) => {
@@ -337,14 +358,25 @@ app.get("/results", (req: Request, res: Response) => {
 });
 
 app.post("/results", (req: Request, res: Response) => {
-  const { quizId, userId, score } = req.body;
+  const allAnswers = Answer.createAnswersFromJSON(answersJson);
+
+  let score = 0;
+  for (const [questionId, answerId] of Object.entries(req.body.results)) {
+    const correctAnswer = allAnswers.filter(
+      (answer) => answer.questionId === parseInt(questionId) && answer.isCorrect
+    );
+    // We always assume that there's only one isCorrect answer for every questionId
+    if (correctAnswer[0].id === answerId) {
+      score++;
+    }
+  }
 
   const results = readResults();
 
   const newResults = new Result(
     results[results.length - 1].id + 1,
-    quizId,
-    userId,
+    req.body.quizId,
+    0,
     score
   );
 

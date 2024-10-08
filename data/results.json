@@ -6,5 +6,44 @@
     "score": 0,
     "strengths": [],
     "weaknesses": []
+  },
+  {
+    "id": 2
+  },
+  {
+    "id": 3,
+    "quizId": "1",
+    "userId": 0,
+    "score": 1
+  },
+  {
+    "id": 4,
+    "quizId": "1",
+    "userId": 0,
+    "score": 1
+  },
+  {
+    "id": 5,
+    "quizId": "1",
+    "userId": 0,
+    "score": 1
+  },
+  {
+    "id": 6,
+    "quizId": "1",
+    "userId": 0,
+    "score": 3
+  },
+  {
+    "id": 7,
+    "quizId": "1",
+    "userId": 0,
+    "score": 1
+  },
+  {
+    "id": 8,
+    "quizId": "1",
+    "userId": 0,
+    "score": 0
   }
 ]
