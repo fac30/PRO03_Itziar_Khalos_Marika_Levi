@@ -14,6 +14,7 @@ import questionsJson from "../data/questions.json";
 import resultsJson from "../data/results.json";
 import usersJson from "../data/users.json";
 
+
 import { Answer } from "./models/answer.ts";
 import { Question } from "./models/question.ts";
 import { Quiz } from "./models/quiz.ts";
@@ -23,12 +24,22 @@ import { User } from "./models/user.ts";
 dotenv.config();
 
 const corsOptions = {
-  origin: 'http://localhost:5173',  // Your frontend URL
-  methods: ['GET', 'POST', 'PATCH', 'DELETE'], // Allowed methods
+  origin: 'http://localhost:5173',  
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'], 
   credentials: true, // Allow credentials like cookies
 };
 
+import { getRandomQuestions, displayQuiz } from './services/quizService';
 
+const category = 'FAC30'; 
+const difficulty = 'Easy';
+
+const questions = getRandomQuestions(category, difficulty);
+if(category.length > 0){
+  displayQuiz(questions);
+} else {
+  console.log('No questions found for the selected category and difficulty.');
+} 
 
 const app: Express = express();
 // Configuring the Express application to automatically parse incoming JSON payloads from the request body.
