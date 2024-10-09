@@ -47,7 +47,6 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Wisdom War Server");
 });
 
-// Route to fetch GIFs from Giphy
 app.get("/giphy", async (req: Request, res: Response) => {
   const searchTerm = req.query.q as string; // Get the search term from the query
   
@@ -65,6 +64,7 @@ app.get("/giphy", async (req: Request, res: Response) => {
     res.status(500).send("Error fetching Giphy");
   }
 });
+
 
 
 app.get("/quizzes", (req: Request, res: Response) => {
