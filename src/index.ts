@@ -362,11 +362,11 @@ app.post("/results", (req: Request, res: Response) => {
 
   let score = 0;
   for (const [questionId, answerId] of Object.entries(req.body.results)) {
-    const correctAnswer = allAnswers.filter(
+    const correctAnswer = allAnswers.find(
       (answer) => answer.questionId === parseInt(questionId) && answer.isCorrect
     );
-    // We always assume that there's only one isCorrect answer for every questionId
-    if (correctAnswer[0].id === answerId) {
+
+    if (correctAnswer?.id === answerId) {
       score++;
     }
   }
