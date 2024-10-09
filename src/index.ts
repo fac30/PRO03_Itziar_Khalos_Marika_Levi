@@ -378,34 +378,45 @@ app.get("/results", (req: Request, res: Response) => {
 });
 
 app.post("/results", (req: Request, res: Response) => {
-  const allAnswers = Answer.createAnswersFromJSON(answersJson);
+  // Assert the type of req.body
+  const { quizId, results } = req.body as {
+    quizId: string;  // Keep this as string for extraction from the request body
+    results: { [key: string]: string }; // Question ID as string and answer ID as string
+  };
 
+  const allAnswers = Answer.createAnswersFromJSON(answersJson);
   let score = 0;
-  for (const [questionId, answerId] of Object.entries(req.body.results)) {
+
+  for (const [questionId, answerId] of Object.entries(results)) {
     const correctAnswer = allAnswers.find(
       (answer) => answer.questionId === parseInt(questionId) && answer.isCorrect
     );
 
-    if (correctAnswer?.id === answerId) {
+    // Ensure answerId is compared as a number
+    if (correctAnswer?.id === parseInt(answerId)) {
       score++;
     }
   }
 
-  const results = readResults();
+  const resultsArray = readResults();
 
+  // Convert quizId to number before using it in Result constructor
   const newResults = new Result(
-    results[results.length - 1].id + 1,
-    req.body.quizId,
-    0,
-    score
+    resultsArray[resultsArray.length - 1].id + 1, // Assuming you have results to base ID on
+    parseInt(quizId),  // Convert quizId to a number
+    0, // This can be replaced with the actual userId if applicable
+    score // Set the calculated score
   );
 
-  results.push(newResults);
+  resultsArray.push(newResults);
 
-  writeResults(results);
+  writeResults(resultsArray);
 
   res.status(201).json(newResults);
 });
+
+
+
 
 const resultsFilePath = path.join(__dirname, "../data/results.json");
 
