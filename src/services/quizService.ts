@@ -1,123 +1,147 @@
-import fs from 'fs';
-import path from 'path';
-import { Quiz } from '../models/quiz';
-import { Question } from '../models/question';
-import { Answer } from '../models/answer';
-import { Result } from '../models/result';  // Import the Result model
-import { User } from '../models/user';      // Import User to associate results with users
-import { QuizWithQuestions } from '../models/quizWithQuestions';
+// Core logic for quiz generation, question selection
 
-// Paths to the data files
-const quizzesFilePath = path.join(__dirname, '../../data/quiz.json');
-const questionsFilePath = path.join(__dirname, '../../data/questions.json');
-const answersFilePath = path.join(__dirname, '../../data/answers.json');
-const resultsFilePath = path.join(__dirname, '../../data/results.json');
-const usersFilePath = path.join(__dirname, '../../data/users.json');
+// Imports the JSON file(s) from databases
+import quizzesJson from "../../data/quizzes.json";
+import questionJson from "../../data/questions.json";
+import answersJson from "../../data/answers.json";
 
-// Utility function to read data from a JSON file
-const readDataFromFile = (filePath: string) => {
-  const data = fs.readFileSync(filePath, 'utf-8');
-  return JSON.parse(data);
-};
+// Define the QuizResult interface
+interface QuizResult {
+    id: number;
+    quizId: number;
+    userId: number;
+    score: number;
+    strengths: number[];  
+    weaknesses: number[]; 
+}
 
-// Utility function to write data to a JSON file
-const writeDataToFile = (filePath: string, data: any) => {
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-};
+// Import the resultsJson
+const resultsJson: QuizResult[] = require("../../data/results.json");
 
-// Utility function to filter questions by quizId
-const getQuestionsForQuiz = (quizId: number): Question[] => {
-  const questionsData: Question[] = readDataFromFile(questionsFilePath);
-  return questionsData.filter((question) => question.quizId === quizId);
-};
-
-// Utility function to get answers for a specific question
-const getAnswersForQuestion = (questionId: number): Answer[] => {
-  const answersData: Answer[] = readDataFromFile(answersFilePath);
-  return answersData.filter((answer) => answer.questionId === questionId);
-};
-
-// Core function to generate a quiz with questions and answers
-export const generateQuizWithQuestions = (quizId: number): QuizWithQuestions | null => {
-  const quizzes: Quiz[] = readDataFromFile(quizzesFilePath);
-  const selectedQuiz = quizzes.find((quiz) => quiz.id === quizId);
-
-  if (!selectedQuiz) {
-    return null;
-  }
-
-  const questionsForQuiz = getQuestionsForQuiz(quizId);
-  const questionsWithAnswers = questionsForQuiz.map((question) => {
-    const answers = getAnswersForQuestion(question.id);
-    return {
-      ...question,
-      answers,
-    };
-  });
-
-  const quizWithQuestions: QuizWithQuestions = {
-    ...selectedQuiz,
-    questions: questionsWithAnswers,
-  };
-
-  return quizWithQuestions;
-};
-
-// Function to submit and store a user's result
-export const submitResult = (quizId: number, userId: number, score: number): Result => {
-  const results: Result[] = readDataFromFile(resultsFilePath);
-
-  const newResult = new Result(results.length + 1, quizId, userId, score);
-  results.push(newResult);
-
-  writeDataToFile(resultsFilePath, results);
-  return newResult;
-};
-
-// Function to calculate a user's score based on answers
-export const calculateScore = (quizId: number, userAnswers: { questionId: number; selectedAnswerId: number }[]): number => {
-  let score = 0;
-  const questions = getQuestionsForQuiz(quizId);
-
-  userAnswers.forEach((userAnswer) => {
-    const question = questions.find(q => q.id === userAnswer.questionId);
-    if (question) {
-      const correctAnswer = getAnswersForQuestion(question.id).find(answer => answer.isCorrect);
-      if (correctAnswer && correctAnswer.id === userAnswer.selectedAnswerId) {
-        score += question.points;
-      }
+// Shuffle array function
+function shuffledArray(array: any[]) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const randomChoice = Math.floor(Math.random() * (i + 1));
+        [array[i], array[randomChoice]] = [array[randomChoice], array[i]];
     }
-  });
+    return array;
+}
 
-  return score;
-};
+// Function to get random questions based on subject and difficulty level
+export function getRandomQuestions(category: string, difficulty: string) {
+    // Step 1: Filter quizzes by category and difficulty
+    const selectedQuiz = quizzesJson.find((quiz) => {
+        return quiz.category.toLowerCase() === category.toLowerCase() &&
+               quiz.difficulty.toLowerCase() === difficulty.toLowerCase();
+    });
 
-// Function to generate a leaderboard (top users by score)
-export const getLeaderboard = (): { userId: number, score: number, userName: string }[] => {
-  const results: Result[] = readDataFromFile(resultsFilePath);
-  const users: User[] = readDataFromFile(usersFilePath);
+    // Step 2: If no quiz is found, handle the error
+    if (!selectedQuiz) {
+        console.log(`No quiz found for category: ${category} and difficulty: ${difficulty}`);
+        return [];
+    }
 
-  // Aggregate scores by user
-  const leaderboard = results.reduce((acc: { userId: number; score: number; }[], result) => {
-    const existingEntry = acc.find((entry) => entry.userId === result.userId);
-    if (existingEntry) {
-      existingEntry.score += result.score;
+    // Step 3: Collect all related questions from the selected quiz
+    const relatedQuestions = questionJson.filter((question: { quizId: number }) => {
+        return question.quizId === selectedQuiz.id;
+    });
+
+    // Step 4: Shuffle the questions to randomize the order
+    const shuffledQuestions = shuffledArray(relatedQuestions);
+
+    // Step 5: Return the shuffled questions
+    return shuffledQuestions;
+}
+
+// Function to display the quiz questions to the user
+export function displayQuiz(questions: any[]) {
+    questions.forEach((q, index) => {
+        console.log(`Question ${index + 1}: ${q.text}`);
+        
+        // Get the options (answers) related to this question
+        const questionOptions = answersJson.filter((answer) => {
+            return answer.questionId === q.id; // Match the question ID with the answer's questionId
+        });
+
+        // Display the options (answers) for the current question
+        if (questionOptions.length > 0) {
+            questionOptions.forEach((option, i) => {
+                console.log(`Option ${i + 1}: ${option.text}`);
+            });
+        } else {
+            console.log("No options available for this question.");
+        }
+    });
+}
+
+// Function to process user answers and calculate the result
+export function processQuizAnswers(
+    userId: number, 
+    quizId: number, 
+    userAnswers: { questionId: number, answer: string }[]
+) {
+    let totalCorrect = 0;
+    const strengths: number[] = [];   // For tracking correct answers (strengths)
+    const weaknesses: number[] = [];  // For tracking incorrect answers (weaknesses)
+
+    // Step 1: Loop through the user's answers
+    userAnswers.forEach(userAnswer => {
+        const correctAnswer = answersJson.find(answer => answer.questionId === userAnswer.questionId && answer.isCorrect);
+
+        // Step 2: Check if a correct answer exists for the question
+        if (!correctAnswer) {
+            console.log(`No correct answer found for question ID ${userAnswer.questionId}`);
+            weaknesses.push(userAnswer.questionId); // Log this as a weakness
+            return;
+        }
+
+        // Step 3: Check if the user's answer matches the correct answer
+        if (userAnswer.answer.trim().toLowerCase() === correctAnswer.text.trim().toLowerCase()) {
+            totalCorrect++;
+            strengths.push(userAnswer.questionId); // Log this as a strength
+        } else {
+            weaknesses.push(userAnswer.questionId); // Log this as a weakness
+        }
+    });
+
+    // Step 4: Calculate the score
+    const totalQuestions = userAnswers.length;
+    const scorePercentage = (totalCorrect / totalQuestions) * 100;
+
+    // Step 5: Store the result in resultsJson
+    const existingResultIndex = resultsJson.findIndex(result => result.userId === userId && result.quizId === quizId);
+
+    // Prepare the result data object
+    const resultData = {
+        id: resultsJson.length + 1,
+        quizId: quizId,
+        userId: userId,
+        score: scorePercentage,
+        strengths: strengths,   
+        weaknesses: weaknesses  
+    };
+
+    if (existingResultIndex !== -1) {
+        // Update the existing result
+        resultsJson[existingResultIndex] = resultData;
     } else {
-      acc.push({ userId: result.userId, score: result.score });
+        // Add new result if none exists
+        resultsJson.push(resultData);
     }
-    return acc;
-  }, []);
 
-  // Sort by score in descending order
-  leaderboard.sort((a, b) => b.score - a.score);
-
-  // Map leaderboard entries with user names
-  return leaderboard.map(entry => {
-    const user = users.find(u => u.id === entry.userId);
+    // Return the result object
     return {
-      userId: entry.userId,
-      score: entry.score,
-      userName: user ? user.name : 'Unknown'
+        totalCorrect,
+        totalQuestions,
+        scorePercentage,
+        strengths,
+        weaknesses
     };
-  });
-};
+}
+
+
+
+
+
+
+

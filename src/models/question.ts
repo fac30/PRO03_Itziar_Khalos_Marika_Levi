@@ -1,9 +1,12 @@
+import { Answer } from "./answer";
+
 class Question {
   id: number;
   quizId: number;
   text: string;
   type: string;
   points: number;
+  answers?: Answer[];
 
   constructor(
     id: number,
