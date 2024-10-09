@@ -1,38 +1,29 @@
-// src/services/spotifyService.ts
+import spotifyApi, { getSpotifyAccessToken } from '../config/spotifyConfig';
+const scoreTrackMap: { [key: number]: string } = {
+  10: '3n3Ppam7vgaVa1iaRUc9Lp',  // Happy track ID
+  9: '7ouMYWpwJ422jRcDASZB7P',   // Slightly happy track ID
+  8: '4cOdK2wGLETKBW3PvgPWqT',   // Track example
+  7: '1dGr1c8CrMLDpV6mPbImSI',
+  6: '2takcwOaAZWiXQijPHIx7B',
+  5: '1hKdDCpiI9mqz1jVHRKG0E',
+  4: '6zspalBd1ZexrQNXYzLOhS',
+  3: '5IX4TbInV0jbu1MQhkljbI',
+  2: '7fHbikDD4ld6xwr5xFybW0',
+  1: '0U6ldwLBEMkwgfQRY4V6D2',
+  0: '6uFn47ACjqYkc0jADwEdj1'    // Saddest track ID
+};
 
-import spotifyApi, { getSpotifyAccessToken } from '../config/apiConfig';
-
-// Function to get a playlist based on the user's quiz score
 export const getSpotifyTrackByScore = async (score: number): Promise<string> => {
-  // Mapping scores to different playlist or track IDs
-  const scoreTrackMap: { [key: number]: string } = {
-    10: '3n3Ppam7vgaVa1iaRUc9Lp',  // Happy track ID (example)
-    9: '7ouMYWpwJ422jRcDASZB7P',   // Slightly happy track ID (example)
-    // Add more mappings here for other scores...
-    0: '6uFn47ACjqYkc0jADwEdj1',   // Saddest track ID (example)
-  };
-
   try {
-    // Ensure we have a valid access token
-    await getSpotifyAccessToken();
-
-    // Get the track ID based on the score
-    const trackId = scoreTrackMap[score] || scoreTrackMap[0]; // Default to the saddest track if no match
-
-    // Fetch the track data from Spotify API
+    await getSpotifyAccessToken();  
+    const trackId = scoreTrackMap[score] || scoreTrackMap[0];  // Default to saddest track if score is invalid
     const track = await spotifyApi.getTrack(trackId);
-
-    // Check if the preview URL exists, otherwise return a default or handle it
-    const previewUrl = track.body.preview_url;
-    if (previewUrl) {
-      return previewUrl;  // Return the track's preview URL if available
+    if (track.body.preview_url) {
+      return track.body.preview_url;  // Return the track's preview URL
     } else {
-      throw new Error('Preview URL not available for this track');
-      // Alternatively, you can return a placeholder URL or empty string:
-      // return 'https://example.com/placeholder.mp3';
+      throw new Error('No preview URL available');
     }
   } catch (error) {
-    console.error('Error fetching track from Spotify:', error);
     throw error;
   }
 };

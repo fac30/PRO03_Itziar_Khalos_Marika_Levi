@@ -1,7 +1,7 @@
 import cors from "cors";
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-import apiRoutes from "./routes/apiRoutes";
+import quizRoutes from "./routes/quizRoutes";
 
 import fs from "fs";
 import path from "path";
@@ -17,7 +17,7 @@ import { Question } from "./models/question.ts";
 import { Quiz } from "./models/quiz.ts";
 import { Result } from "./models/result.ts";
 import { User } from "./models/user.ts";
-import { all } from "axios";
+import axios, { all } from "axios";
 
 dotenv.config();
 
@@ -29,13 +29,13 @@ const corsOptions = {
 
 const app: Express = express();
 app.use(express.json());
-app.use("/api", apiRoutes);
+app.use("/quiz", quizRoutes);
 
 app.use(
   cors({
     origin: "http://localhost:5173",
     methods: ["GET", "POST", "PATCH", "DELETE"],
-    credentials: true, // If you are using cookies or authentication
+    credentials: true, 
   })
 );
 
@@ -46,6 +46,26 @@ app.use(cors(corsOptions));
 app.get("/", (req: Request, res: Response) => {
   res.send("Wisdom War Server");
 });
+
+// Route to fetch GIFs from Giphy
+app.get("/giphy", async (req: Request, res: Response) => {
+  const searchTerm = req.query.q as string; // Get the search term from the query
+  
+  try {
+    const response = await axios.get(`https://api.giphy.com/v1/gifs/search`, {
+      params: {
+        api_key: process.env.GIPHY_API_KEY, // Use your Giphy API key
+        q: searchTerm,
+        limit: 1 // You can adjust this limit as needed
+      }
+    });
+    res.json(response.data); // Send back the Giphy data
+  } catch (error) {
+    console.error("Error fetching Giphy:", error);
+    res.status(500).send("Error fetching Giphy");
+  }
+});
+
 
 app.get("/quizzes", (req: Request, res: Response) => {
   const allQuizzes = Quiz.createQuizzesFromJSON(quizzesJson);
