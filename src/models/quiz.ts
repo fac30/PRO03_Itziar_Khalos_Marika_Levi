@@ -4,22 +4,19 @@ class Quiz {
   description: string;
   category: string;
   difficulty: string;
-  numberOfQuestions: number;
 
   constructor(
     id: number,
     name: string,
     description: string,
     category: string,
-    difficulty: string,
-    numberOfQuestions: number
+    difficulty: string
   ) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.category = category;
     this.difficulty = difficulty;
-    this.numberOfQuestions = numberOfQuestions;
   }
 
   // with static the function is part of the blueprint, and not of the instance.
@@ -34,7 +31,6 @@ class Quiz {
           quiz.description,
           quiz.category,
           quiz.difficulty,
-          quiz.numberOfQuestions
         )
       );
     }
