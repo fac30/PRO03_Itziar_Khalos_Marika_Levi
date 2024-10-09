@@ -4,5 +4,26 @@
     "quizId": 1,
     "userId": 1,
     "score": 0
+  },
+  {
+    "id": 2,
+    "quizId": 1,
+    "userId": 1,
+    "score": 0
+  },
+  {
+    "id": 3,
+    "quizId": 1,
+    "userId": 1
+  },
+  {
+    "id": 4,
+    "quizId": 1,
+    "userId": 1
+  },
+  {
+    "id": 5,
+    "quizId": 1,
+    "userId": 1
   }
 ]

@@ -8,7 +8,7 @@ interface QuizResult {
   id: number;
   quizId: number;
   userId: number;
-  score: number;
+  score?: number;
 }
 
 function shuffledArray<T>(array: T[]): T[] {
@@ -108,7 +108,8 @@ export function processQuizAnswers(
     id: resultsJson.length + 1,
     quizId: quizId,
     userId: userId,
-    score: scorePercentage,
+    score: scorePercentage || 0,
+  
   };
 
   if (existingResultIndex !== -1) {
@@ -118,6 +119,9 @@ export function processQuizAnswers(
   }
 
 
+ resultsJson.forEach(result => {
+  result.score = result.score !== undefined ? result.score : 0;  // Default to 0 if score is undefined
+});
   writeResults(resultsJson); 
 
   // Return the result object
@@ -137,7 +141,6 @@ function writeResults(results: QuizResult[]): void {
     JSON.stringify(results, null, 2)
   );
 }
-
 
 
 

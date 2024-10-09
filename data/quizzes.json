@@ -94,5 +94,29 @@
     "category": "Movie",
     "difficulty": "Hard",
     "numberOfQuestions": 8
+  },
+  {
+    "id": 13,
+    "name": "io",
+    "description": "fre",
+    "category": "Art",
+    "difficulty": "Easy",
+    "numberOfQuestions": 5
+  },
+  {
+    "id": 14,
+    "name": "11",
+    "description": "w",
+    "category": "Movie",
+    "difficulty": "Easy",
+    "numberOfQuestions": 5
+  },
+  {
+    "id": 15,
+    "name": "s",
+    "description": "vzx",
+    "category": "FAC30",
+    "difficulty": "Medium",
+    "numberOfQuestions": 5
   }
 ]

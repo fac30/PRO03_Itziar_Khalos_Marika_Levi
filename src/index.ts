@@ -41,6 +41,8 @@ if(category.length > 0){
   console.log('No questions found for the selected category and difficulty.');
 } 
 
+
+
 const app: Express = express();
 // Configuring the Express application to automatically parse incoming JSON payloads from the request body.
 app.use(express.json());
