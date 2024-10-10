@@ -1,7 +1,7 @@
 import cors from "cors";
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-import apiRoutes from "./routes/apiRoutes";
+import giphyRoutes from "./routes/giphyRoutes.ts";
 
 import fs from "fs";
 import path from "path";
@@ -17,7 +17,7 @@ import { Question } from "./models/question.ts";
 import { Quiz } from "./models/quiz.ts";
 import { Result } from "./models/result.ts";
 import { User } from "./models/user.ts";
-import { all } from "axios";
+import axios, { all } from "axios";
 
 dotenv.config();
 
@@ -29,7 +29,7 @@ const corsOptions = {
 
 const app: Express = express();
 app.use(express.json());
-app.use("/api", apiRoutes);
+app.use("/giphy", giphyRoutes);
 
 const port = process.env.PORT || 3000;
 
@@ -38,6 +38,26 @@ app.use(cors(corsOptions));
 app.get("/", (req: Request, res: Response) => {
   res.send("Wisdom War Server");
 });
+
+// In your backend index.ts or server.ts
+app.get("/giphy", async (req: Request, res: Response) => {
+  const searchTerm = req.query.q as string; // Get the search term from the query
+
+  try {
+    const response = await axios.get(`https://api.giphy.com/v1/gifs/search`, {
+      params: {
+        api_key: process.env.GIPHY_API_KEY, // Your Giphy API key from environment variables
+        q: searchTerm,
+        limit: 1, // Adjust this limit as needed
+      },
+    });
+    res.json(response.data); // Send back the Giphy data
+  } catch (error) {
+    console.error("Error fetching Giphy:", error);
+    res.status(500).send("Error fetching Giphy");
+  }
+});
+
 
 app.get("/quizzes", (req: Request, res: Response) => {
   const allQuizzes = Quiz.createQuizzesFromJSON(quizzesJson);

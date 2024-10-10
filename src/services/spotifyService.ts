@@ -1,38 +1,27 @@
 // src/services/spotifyService.ts
+import spotifyApi, { getSpotifyAccessToken } from '../config/spotifyConfig';
 
-import spotifyApi, { getSpotifyAccessToken } from '../config/apiConfig';
+const backgroundPlaylists = [
+  '37i9dQZF1DWWEJlAGA9gs0', // Classical Essentials
+  '37i9dQZF1DWTTQ4F9HvbHV', // Ludovico Einaudi Essentials
+  '37i9dQZF1DWV0gynK7G6pD', // Classical Focus
+  '37i9dQZF1DWXmDxoFybV8T', // Hans Zimmer Soundtracks
+  '37i9dQZF1DX7FVBLcFaYHs', // Movie Soundtracks
+];
 
-// Function to get a playlist based on the user's quiz score
-export const getSpotifyTrackByScore = async (score: number): Promise<string> => {
-  // Mapping scores to different playlist or track IDs
-  const scoreTrackMap: { [key: number]: string } = {
-    10: '3n3Ppam7vgaVa1iaRUc9Lp',  // Happy track ID (example)
-    9: '7ouMYWpwJ422jRcDASZB7P',   // Slightly happy track ID (example)
-    // Add more mappings here for other scores...
-    0: '6uFn47ACjqYkc0jADwEdj1',   // Saddest track ID (example)
-  };
-
+// Function to fetch a random background playlist
+export const getRandomBackgroundPlaylist = async (): Promise<string | null> => {
   try {
-    // Ensure we have a valid access token
-    await getSpotifyAccessToken();
+    await getSpotifyAccessToken(); // Ensure token is valid
 
-    // Get the track ID based on the score
-    const trackId = scoreTrackMap[score] || scoreTrackMap[0]; // Default to the saddest track if no match
+    // Select a random playlist ID from the list
+    const randomIndex = Math.floor(Math.random() * backgroundPlaylists.length);
+    const playlistId = backgroundPlaylists[randomIndex];
 
-    // Fetch the track data from Spotify API
-    const track = await spotifyApi.getTrack(trackId);
-
-    // Check if the preview URL exists, otherwise return a default or handle it
-    const previewUrl = track.body.preview_url;
-    if (previewUrl) {
-      return previewUrl;  // Return the track's preview URL if available
-    } else {
-      throw new Error('Preview URL not available for this track');
-      // Alternatively, you can return a placeholder URL or empty string:
-      // return 'https://example.com/placeholder.mp3';
-    }
+    const playlist = await spotifyApi.getPlaylist(playlistId);
+    return playlist.body.external_urls.spotify; // Return Spotify playlist URL
   } catch (error) {
-    console.error('Error fetching track from Spotify:', error);
+    console.error('Error fetching playlist from Spotify:', error);
     throw error;
   }
 };
