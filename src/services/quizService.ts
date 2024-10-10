@@ -4,6 +4,7 @@
 import quizzesJson from "../../data/quizzes.json";
 import questionJson from "../../data/questions.json";
 import answersJson from "../../data/answers.json";
+import { getGiphyByScore } from './giphyService'; 
 
 // Define the QuizResult interface
 interface QuizResult {
@@ -139,6 +140,24 @@ export function processQuizAnswers(
     };
 }
 
+// NEW FUNCTION: Combine quiz results and Giphy meme fetching
+export async function getQuizResultWithGif(
+    userId: number, 
+    quizId: number, 
+    userAnswers: { questionId: number, answer: string }[]
+) {
+    // Step 1: Process the user's answers
+    const quizResult = processQuizAnswers(userId, quizId, userAnswers);
+
+    // Step 2: Fetch the appropriate Giphy meme based on score
+    const gifUrl = await getGiphyByScore(quizResult.scorePercentage);
+
+    // Step 3: Return the result with the Giphy meme URL
+    return {
+        ...quizResult,
+        gifUrl,  // Attach the GIF URL to the result
+    };
+}
 
 
 
