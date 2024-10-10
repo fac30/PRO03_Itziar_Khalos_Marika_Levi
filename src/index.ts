@@ -31,14 +31,6 @@ const app: Express = express();
 app.use(express.json());
 app.use("/api", apiRoutes);
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST", "PATCH", "DELETE"],
-    credentials: true, // If you are using cookies or authentication
-  })
-);
-
 const port = process.env.PORT || 3000;
 
 app.use(cors(corsOptions));
@@ -365,19 +357,18 @@ app.post("/results", (req: Request, res: Response) => {
     const correctAnswer = allAnswers.find(
       (answer) => answer.questionId === parseInt(questionId) && answer.isCorrect
     );
-
     if (correctAnswer?.id === answerId) {
       score++;
     }
   }
 
   const results = readResults();
-
   const newResults = new Result(
     results[results.length - 1].id + 1,
     req.body.quizId,
     0,
-    score
+    score,
+    req.body.totalQuestions
   );
 
   results.push(newResults);
@@ -397,6 +388,14 @@ function readResults(): Result[] {
 function writeResults(results: Result[]): void {
   fs.writeFileSync(resultsFilePath, JSON.stringify(results, null, 2));
 }
+
+app.get("/results/:id", (req: Request, res: Response) => {
+  const resultId = parseInt(req.params.id);
+
+  let results = readResults();
+  const result = results.find((result) => result.id === resultId);
+  res.json(result);
+});
 
 app.patch("/results/:id", (req: Request, res: Response) => {
   const resultId = parseInt(req.params.id);

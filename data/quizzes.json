@@ -82,11 +82,5 @@
     "description": "Dream about movies with this quiz.",
     "category": "Movie",
     "difficulty": "Hard"
-  },
-  {
-    "id": 13,
-    "description": "test",
-    "category": "FAC30",
-    "difficulty": "Easy"
   }
 ]

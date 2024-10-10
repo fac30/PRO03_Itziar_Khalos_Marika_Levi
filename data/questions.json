@@ -103,5 +103,12 @@
     "text": "Who would like to be an osteopath when they turn 50?",
     "type": "multiple choice",
     "points": 1
+  },
+  {
+    "id": 16,
+    "quizId": 1,
+    "text": "What is Jack's favourite colour?",
+    "type": "multiple choice",
+    "points": 1
   }
 ]
