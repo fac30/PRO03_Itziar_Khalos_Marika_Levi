@@ -1,6 +1,6 @@
 // src/routes/quizRoutes.ts
 import express from 'express';
-import { getMemeForAnswer } from '../services/giphyService';
+import { getGiphyByScore } from '../services/giphyService';
 import { calculateAnswer } from '../services/quizService'; // This function does not exist yet
 
 const router = express.Router();
