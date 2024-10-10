@@ -1,5 +1,4 @@
 // src/routes/quizRoutes.ts
-
 import express from 'express';
 import { getQuizResultWithGif } from '../services/quizService'; // Import the new function
 import { getGiphyByScore } from '../services/giphyService';
