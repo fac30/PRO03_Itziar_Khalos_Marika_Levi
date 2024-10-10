@@ -1,7 +1,7 @@
 import cors from "cors";
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-import apiRoutes from "./routes/apiRoutes";
+import apiRoutes from "./routes/giphyRoutes.ts";
 
 import fs from "fs";
 import path from "path";
