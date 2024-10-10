@@ -1,19 +1,18 @@
 import express from 'express';
-import { getRandomBackgroundPlaylist } from '../services/spotifyService';
+import { getTopTracks } from '../services/spotifyService';
 
 const router = express.Router();
 
-// Route to get a random background playlist
-router.get('/background-playlist', async (req, res) => {
+router.get('/top-tracks', async (req, res) => {
   try {
-    const playlistUrl = await getRandomBackgroundPlaylist();
+    const playlistUrl = await getTopTracks();
     res.json({
       success: true,
       playlistUrl,
     });
   } catch (error) {
-    console.error('Error in /api/spotify/background-playlist:', error);
-    res.status(500).json({ success: false, message: 'Failed to fetch background playlist from Spotify.' });
+    console.error('Error in /api/spotify/top-tracks:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch top tracks from Spotify.' });
   }
 });
 

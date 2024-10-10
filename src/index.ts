@@ -2,6 +2,7 @@ import cors from "cors";
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import giphyRoutes from "./routes/giphyRoutes.ts";
+import spotifyRoutes from './routes/spotifyRoutes';
 
 import fs from "fs";
 import path from "path";
@@ -29,11 +30,13 @@ const corsOptions = {
 
 const app: Express = express();
 app.use(express.json());
-app.use("/giphy", giphyRoutes);
 
 const port = process.env.PORT || 3000;
 
 app.use(cors(corsOptions));
+
+app.use("/giphy", giphyRoutes);
+app.use('/api/spotify', spotifyRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Wisdom War Server");
