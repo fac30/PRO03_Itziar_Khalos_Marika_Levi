@@ -35,7 +35,7 @@ app.use(
   cors({
     origin: "http://localhost:5173",
     methods: ["GET", "POST", "PATCH", "DELETE"],
-    credentials: true, 
+    credentials: true, // If you are using cookies or authentication
   })
 );
 
@@ -391,21 +391,18 @@ app.post("/results", (req: Request, res: Response) => {
     const correctAnswer = allAnswers.find(
       (answer) => answer.questionId === parseInt(questionId) && answer.isCorrect
     );
-
-    // Ensure answerId is compared as a number
-    if (correctAnswer?.id === parseInt(answerId)) {
+    if (correctAnswer?.id === answerId) {
       score++;
     }
   }
 
-  const resultsArray = readResults();
-
-  // Convert quizId to number before using it in Result constructor
+  const results = readResults();
   const newResults = new Result(
-    resultsArray[resultsArray.length - 1].id + 1, // Assuming you have results to base ID on
-    parseInt(quizId),  // Convert quizId to a number
-    0, // This can be replaced with the actual userId if applicable
-    score // Set the calculated score
+    results[results.length - 1].id + 1,
+    req.body.quizId,
+    0,
+    score,
+    req.body.totalQuestions
   );
 
   resultsArray.push(newResults);
@@ -428,6 +425,14 @@ function readResults(): Result[] {
 function writeResults(results: Result[]): void {
   fs.writeFileSync(resultsFilePath, JSON.stringify(results, null, 2));
 }
+
+app.get("/results/:id", (req: Request, res: Response) => {
+  const resultId = parseInt(req.params.id);
+
+  let results = readResults();
+  const result = results.find((result) => result.id === resultId);
+  res.json(result);
+});
 
 app.patch("/results/:id", (req: Request, res: Response) => {
   const resultId = parseInt(req.params.id);
