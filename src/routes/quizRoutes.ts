@@ -24,4 +24,28 @@ router.post('/submit-quiz', async (req, res) => {
   }
 });
 
+// Test route to fetch Giphy GIF based on a test score
+router.get('/test-giphy', async (req, res) => {
+  const { score } = req.query; // Expect score as a query parameter
+
+  // Convert score to a number and validate it
+  const numericScore = parseFloat(score as string);
+  if (isNaN(numericScore) || numericScore < 0 || numericScore > 100) {
+    return res.status(400).json({ error: 'Invalid score. Please provide a score between 0 and 100.' });
+  }
+
+  try {
+    // Call the service to get the appropriate GIF based on the score
+    const gifUrl = await getGiphyByScore(numericScore);
+    res.json({
+      success: true,
+      score: numericScore,
+      gifUrl,
+    });
+  } catch (error) {
+    console.error('Error fetching GIF:', error);
+    res.status(500).json({ error: 'Failed to fetch GIF' });
+  }
+});
+
 export default router;
