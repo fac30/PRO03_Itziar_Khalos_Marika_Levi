@@ -39,16 +39,17 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Wisdom War Server");
 });
 
+// In your backend index.ts or server.ts
 app.get("/giphy", async (req: Request, res: Response) => {
   const searchTerm = req.query.q as string; // Get the search term from the query
-  
+
   try {
     const response = await axios.get(`https://api.giphy.com/v1/gifs/search`, {
       params: {
-        api_key: process.env.GIPHY_API_KEY, // Use your Giphy API key
+        api_key: process.env.GIPHY_API_KEY, // Your Giphy API key from environment variables
         q: searchTerm,
-        limit: 1 // You can adjust this limit as needed
-      }
+        limit: 1, // Adjust this limit as needed
+      },
     });
     res.json(response.data); // Send back the Giphy data
   } catch (error) {
@@ -56,6 +57,7 @@ app.get("/giphy", async (req: Request, res: Response) => {
     res.status(500).send("Error fetching Giphy");
   }
 });
+
 
 app.get("/quizzes", (req: Request, res: Response) => {
   const allQuizzes = Quiz.createQuizzesFromJSON(quizzesJson);
