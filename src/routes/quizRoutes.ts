@@ -1,28 +1,25 @@
 // src/routes/quizRoutes.ts
-import express from 'express';
-import { getGiphyByScore } from '../services/giphyService';
-import { calculateAnswer } from '../services/quizService'; // This function does not exist yet
 
+import express from 'express';
+import { getQuizResultWithGif } from '../services/quizService'; // Import the new function
+import { getGiphyByScore } from '../services/giphyService';
 const router = express.Router();
 
-// Endpoint to submit an answer and retrieve a meme
-router.post('/submit-answer', async (req, res) => {
-  const { questionId, userAnswer } = req.body;
+// Route to handle quiz submission and return result with GIF
+router.post('/submit-quiz', async (req, res) => {
+  const { quizId, userId, userAnswers } = req.body;
 
   try {
-    // Logic to check if the answer is correct
-    const isCorrect = calculateAnswer(questionId, userAnswer);
+    // Use the new service function to get quiz result and GIF
+    const quizResultWithGif = await getQuizResultWithGif(userId, quizId, userAnswers);
 
-    // Fetch the appropriate meme (positive for correct, negative for incorrect)
-    const memeUrl = await getMemeForAnswer(isCorrect);
-
+    // Send the result back as the response
     res.json({
       success: true,
-      isCorrect,
-      memeUrl, // Return the meme URL in the response
+      ...quizResultWithGif, // Send the entire result object including gifUrl
     });
   } catch (error) {
-    console.error('Error in /submit-answer:', error);
+    console.error('Error in /submit-quiz:', error);
     res.status(500).json({ success: false, message: 'Something went wrong.' });
   }
 });
