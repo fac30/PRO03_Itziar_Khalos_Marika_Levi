@@ -28,10 +28,10 @@ const corsOptions = {
   credentials: true,
 };
 
-const app: Express = express();
+export const app: Express = express();
 app.use(express.json());
 
-const port = process.env.PORT || 3000;
+// const port = process.env.PORT || 3000;
 
 app.use(cors(corsOptions));
 
@@ -456,7 +456,4 @@ app.delete("/results/:id", (req: Request, res: Response) => {
 //   console.log(`[server]: Server is running at http://localhost:${port}`);
 // });
 
-app.listen(3000, () => {
-  console.log(`Server is running at http://localhost:3000`);
-});
 
