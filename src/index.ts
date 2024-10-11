@@ -452,6 +452,10 @@ app.delete("/results/:id", (req: Request, res: Response) => {
   res.status(204).json();
 });
 
-app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
+// app.listen(port, () => {
+//   console.log(`[server]: Server is running at http://localhost:${port}`);
+//   });
+
+  app.listen(3000, '0.0.0.0', () => {
+    console.log(`Server is running at http://0.0.0.0:3000`);
 });
